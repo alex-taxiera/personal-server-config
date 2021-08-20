@@ -37,11 +37,7 @@ secrets:
     external: true
   READONLY_PASS:
     external: true
-  AVC_CLIENT_ID:
-    external: true
-  AVC_TOKEN:
-    external: true
-  CAALYX_ID:
+  AVC_ENV:
     external: true
 
 services:
@@ -152,15 +148,7 @@ services:
     deploy:
       replicas: 1
     secrets:
-      -
-        source: AVC_CLIENT_ID
-        target: CLIENT_ID
-      -
-        source: AVC_TOKEN
-        target: TOKEN
-      -
-        source: CAALYX_ID
-        target: ADMIN_ID
+      - AVC_ENV
     environment:
       TZ: America/New_York
       HEARTBEAT_TIMEOUT: 60
@@ -168,9 +156,9 @@ services:
       RDY_MESSAGE: 'false'
       AWS: 'false'
     entrypoint:
-      - '/bin/sh'
-      - '-c'
-      - 'export $(egrep  -v '^#'  /run/secrets/* | xargs); source /entrypoint.sh'
+      - /bin/sh
+      - -c
+      - export $$(grep -v '^#' /run/secrets/AVC_ENV | xargs); . ./startAVC.sh
     volumes:
       -
         type: bind
