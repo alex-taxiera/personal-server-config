@@ -15,7 +15,7 @@ services:
       - source: MAIN_RCON_PASS
         target: RCON_PASSWORD
     environment:
-      VERSION: 1.17
+      VERSION: 1.17.1
       MOTD: "Vanilla Minecraft, Chill Vibes Only"
       EULA: "TRUE"
       ENABLE_RCON: "true"
