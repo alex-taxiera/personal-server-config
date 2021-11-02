@@ -1,0 +1,18 @@
+#!/bin/bash
+# nextcloud dirs
+mkdir -p /mnt/md0/nextcloud
+mkdir -p ~/docker/volumes/nextcloud/data
+# transmission dirs
+mkdir -p /mnt/md0/torrents
+chown alex:alex /mnt/md0/torrents
+mkdir -p ~/docker/volumes/transmission/config
+mkdir -p ~/docker/volumes/transmission/watch
+#db dirs
+mkdir -p ~/docker/volumes/nextcloud/postgres
+mkdir -p ~/docker/volumes/nextcloud/db_backups
+# nginx dirs
+mkdir -p ~/docker/volumes/nextcloud/nginx/certs
+mkdir -p ~/docker/volumes/nextcloud/nginx/conf.d
+mkdir -p ~/docker/volumes/nextcloud/nginx/html
+mkdir -p ~/docker/volumes/nextcloud/nginx/vhost.d
+# (crontab -l 2>/dev/null; echo "0 0 * * * sudo docker ps -aqf '^bots_db' | xargs -i sh -c 'sudo docker exec {} /backup.sh'") | crontab -
