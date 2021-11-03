@@ -1,0 +1,35 @@
+version: '3.7'
+
+secrets:
+  SAMBA_ADMIN_PASS:
+    external: true
+  SAMBA_GUEST_PASS:
+    external: true
+
+services:
+  smbd:
+    build: .
+    image: servercontainers/samba
+    hostname: samba
+    secrets:
+      -
+        source: SAMBA_ADMIN_PASS
+        target: ACCOUNT_alex
+      -
+        source: SAMBA_GUEST_PASS
+        target: ACCOUNT_guest
+    environment:
+      SAMBA_CONF_MAP_TO_GUEST: never
+      SAMBA_GLOBAL_CONFIG_unix_SPACE_extensions: 'no'
+
+      UID_alex: 1000
+      GROUPS_alex: alex
+
+      SAMBA_VOLUME_CONFIG_ADMIN: '[Admin]; path=/mnt/md0; browseable = yes; read only = no; valid users = alex'
+      SAMBA_VOLUME_CONFIG_PUBLIC: '[Public]; path=/mnt/md0/samba/public; browseable = yes; read only = no; valid users = guest, alex; admin users = alex; follow symlinks = yes; wide links = yes'
+    ports:
+      - "139:139/tcp"
+      - "445:445/tcp"
+    volumes:
+      - /mnt/md0:/mnt/md0
+      - /mnt/md0/samba/public:/mnt/md0/samba/public
