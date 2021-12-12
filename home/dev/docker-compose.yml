@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+
+  db:
+    image: postgres:12
+    deploy:
+      replicas: 1
+      resources:
+        reservations:
+          memory: 128M
+        limits:
+          memory: 256M
+    environment:
+      POSTGRES_PASSWORD: password123
+    ports:
+      - 5432:5432
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      -
+        type: bind
+        source: ~/docker/volumes/dev-pg
+        target: /var/lib/postgresql/data
