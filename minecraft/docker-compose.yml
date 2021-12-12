@@ -5,21 +5,41 @@ secrets:
     external: true
 
 services:
-  main:
+  1-17:
     image: itzg/minecraft-server
     deploy:
       replicas: 1
     ports:
+      - 25569:25565
       - 25565:25565
     secrets:
       - source: MAIN_RCON_PASS
         target: RCON_PASSWORD
     environment:
       VERSION: 1.17.1
-      MOTD: "Vanilla Minecraft, Chill Vibes Only"
-      EULA: "TRUE"
-      ENABLE_RCON: "true"
+      MOTD: Vanilla 1.17
+      EULA: 'true'
+      ENABLE_RCON: 'true'
+      RCON_PORT: 28016
+      restart: always
+      JVM_DD_OPTS: log4j2.formatMsgNoLookups=true
+    volumes:
+      - /mnt/md0/minecraft/1.17:/data
+  1-18:
+    image: itzg/minecraft-server
+    deploy:
+      replicas: 1
+    ports:
+      - 25579:25565
+    secrets:
+      - source: MAIN_RCON_PASS
+        target: RCON_PASSWORD
+    environment:
+      VERSION: 1.18.1
+      MOTD: Vanilla 1.18
+      EULA: 'true'
+      ENABLE_RCON: 'true'
       RCON_PORT: 28016
       restart: always
     volumes:
-      - /mnt/md0/minecraft/1.17:/data
+      - /mnt/md0/minecraft/1.18:/data
