@@ -1,5 +1,9 @@
 version: '3.7'
 
+networks:
+  nginx-proxy:
+    external: true
+
 secrets:
   MAIN_RCON_PASS:
     external: true
@@ -31,10 +35,13 @@ services:
     ports:
       - 25565:25565
       - 25579:25565
+      - 8123:8123
     secrets:
       -
         source: MAIN_RCON_PASS
         target: RCON_PASSWORD
+    networks:
+      - nginx-proxy
     environment:
       TYPE: PAPER
       MEMORY: 4G
@@ -44,5 +51,13 @@ services:
       ENABLE_RCON: 'true'
       RCON_PORT: 28016
       restart: always
+      SYNC_SKIP_NEWER_IN_DESTINATION: 'false'
+      COPY_CONFIG_DEST: /data
+      VIRTUAL_HOST: map.mc.taxiera.link
+      VIRTUAL_PORT: 8123
+      LETSENCRYPT_HOST: map.mc.taxiera.link
+      LETSENCRYPT_EMAIL: alex.taxiera@gmail.com
     volumes:
       - /mnt/md0/minecraft/1.18:/data
+      - ./plugins/1-18:/plugins
+      - ./config/1-18:/config

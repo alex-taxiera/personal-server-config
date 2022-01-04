@@ -3,6 +3,7 @@ version: '3.7'
 networks:
   postgres_backend_network:
   nginx-proxy:
+    external: true
 
 secrets:
   ADMIN_DB_USER:
