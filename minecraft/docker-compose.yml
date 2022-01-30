@@ -4,23 +4,38 @@ networks:
   nginx-proxy:
     external: true
 
-secrets:
-  MAIN_RCON_PASS:
-    external: true
-
 services:
+  1-18-dynmap:
+    image: nginx
+    deploy:
+      replicas: 1
+    ports:
+      - 8123:80
+    networks:
+      - nginx-proxy
+    environment:
+      VIRTUAL_PORT: 8123
+      VIRTUAL_HOST: map.mc.taxiera.link
+      LETSENCRYPT_HOST: map.mc.taxiera.link
+      LETSENCRYPT_EMAIL: alex.taxiera@gmail.com
+    volumes:
+      - /mnt/md0/minecraft/1.18/plugins/dynmap/web:/var/www/dynmap:ro
+      - ./nginx:/etc/nginx/conf.d:ro
   1-17:
     image: itzg/minecraft-server
     deploy:
       replicas: 1
     ports:
-      - 25569:25565
+      - target: 25565
+        published: 25569
+        mode: host
     environment:
       VERSION: 1.17.1
       MOTD: Vanilla 1.17
       EULA: 'true'
       ENABLE_RCON: 'true'
-      restart: always
+      RCON_PORT: 28016
+      OVERRIDE_SERVER_PROPERTIES: 'true'
     volumes:
       - /mnt/md0/minecraft/1.17:/data
   1-18:
@@ -28,25 +43,20 @@ services:
     deploy:
       replicas: 1
     ports:
-      - 25565:25565
-      - 25579:25565
-      - 8123:8123
-    networks:
-      - nginx-proxy
+      - target: 25565
+        published: 25579
+        mode: host
     environment:
       TYPE: PAPER
-      MEMORY: 4G
+      MEMORY: 3G
       VERSION: 1.18.1
       MOTD: Vanilla 1.18
       EULA: 'true'
       ENABLE_RCON: 'true'
-      restart: always
+      RCON_PORT: 28016
+      OVERRIDE_SERVER_PROPERTIES: 'true'
       SYNC_SKIP_NEWER_IN_DESTINATION: 'false'
       COPY_CONFIG_DEST: /data
-      VIRTUAL_HOST: map.mc.taxiera.link
-      VIRTUAL_PORT: 8123
-      LETSENCRYPT_HOST: map.mc.taxiera.link
-      LETSENCRYPT_EMAIL: alex.taxiera@gmail.com
     volumes:
       - /mnt/md0/minecraft/1.18:/data
       - ./plugins/1-18:/plugins
