@@ -61,3 +61,26 @@ services:
       - /mnt/md0/minecraft/1.18:/data
       - ./plugins/1-18:/plugins
       - ./config/1-18:/config
+  1-19:
+    image: itzg/minecraft-server
+    deploy:
+      replicas: 1
+    ports:
+      - target: 25565
+        published: 25589
+        mode: host
+    environment:
+      TYPE: PAPER
+      MEMORY: 3G
+      VERSION: 1.19.1
+      MOTD: Vanilla 1.19
+      EULA: 'true'
+      ENABLE_RCON: 'true'
+      RCON_PORT: 28016
+      OVERRIDE_SERVER_PROPERTIES: 'true'
+      SYNC_SKIP_NEWER_IN_DESTINATION: 'false'
+      COPY_CONFIG_DEST: /data
+    volumes:
+      - /mnt/md0/minecraft/1.19:/data
+      - ./plugins/1-19:/plugins
+      - ./config/1-19:/config
