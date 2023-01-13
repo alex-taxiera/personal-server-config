@@ -15,11 +15,23 @@ services:
       ACCOUNT_debbie: 'debbie:1000:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX:0057729555F7F629DAD83FB54EFC5862:[U          ]:LCT-619013A2:'
       GROUPS_alex: alex
 
-      SAMBA_VOLUME_CONFIG_ADMIN: '[Admin]; path=/mnt/md0; browseable = yes; read only = no; valid users = alex'
-      SAMBA_VOLUME_CONFIG_PUBLIC: '[Public]; path=/mnt/md0/samba/public; browseable = yes; read only = no; valid users = example, debbie, fig, alex; admin users = alex; follow symlinks = yes; wide links = yes'
+      SAMBA_VOLUME_CONFIG_ADMIN: '[Admin]; path=/mnt/md0; read only = no; valid users = alex; admin users = alex;'
+      SAMBA_VOLUME_CONFIG_PUBLIC: '[Public]; path=/mnt/md0/samba/public; read only = yes; valid users = debbie, fig, alex; admin users = alex; follow symlinks = yes; wide links = yes'
     ports:
-      - "139:139/tcp"
-      - "445:445/tcp"
+      - target: 137
+        published: 137
+        mode: host
+        protocol: udp
+      - target: 138
+        published: 138
+        mode: host
+        protocol: udp
+      - target: 139
+        published: 139
+        mode: host
+      - target: 445
+        published: 445
+        mode: host
     volumes:
       - /mnt/md0:/mnt/md0
       - /mnt/md0/samba/public:/mnt/md0/samba/public
