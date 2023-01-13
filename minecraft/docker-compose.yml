@@ -5,22 +5,22 @@ networks:
     external: true
 
 services:
-  1-18-dynmap:
-    image: nginx
-    deploy:
-      replicas: 1
-    ports:
-      - 8123:80
-    networks:
-      - nginx-proxy
-    environment:
-      VIRTUAL_PORT: 8123
-      VIRTUAL_HOST: map.mc.taxiera.link
-      LETSENCRYPT_HOST: map.mc.taxiera.link
-      LETSENCRYPT_EMAIL: alex.taxiera@gmail.com
-    volumes:
-      - /mnt/md0/minecraft/1.18/plugins/dynmap/web:/var/www/dynmap:ro
-      - ./nginx:/etc/nginx/conf.d:ro
+  # dynmap:
+  #   image: nginx
+  #   deploy:
+  #     replicas: 1
+  #   ports:
+  #     - 8123:80
+  #   networks:
+  #     - nginx-proxy
+  #   environment:
+  #     VIRTUAL_PORT: 8123
+  #     VIRTUAL_HOST: map.mc.taxiera.link
+  #     LETSENCRYPT_HOST: map.mc.taxiera.link
+  #     LETSENCRYPT_EMAIL: alex.taxiera@gmail.com
+  #   volumes:
+  #     - /mnt/md0/minecraft/1.18/plugins/dynmap/web:/var/www/dynmap:ro
+  #     - ./nginx:/etc/nginx/conf.d:ro
   1-17:
     image: itzg/minecraft-server
     deploy:
@@ -63,8 +63,6 @@ services:
       - ./config/1-18:/config
   1-19:
     image: itzg/minecraft-server
-    deploy:
-      replicas: 1
     ports:
       - target: 25565
         published: 25589
@@ -72,7 +70,7 @@ services:
     environment:
       TYPE: PAPER
       MEMORY: 3G
-      VERSION: 1.19.1
+      VERSION: 1.19.2
       MOTD: Vanilla 1.19
       EULA: 'true'
       ENABLE_RCON: 'true'
