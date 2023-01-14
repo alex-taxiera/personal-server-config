@@ -18,7 +18,8 @@ services:
       - 32413:32413/udp
       - 32414:32414/udp
     devices:
-      - /dev/dri/:/dev/dri/
+      - /dev/dri:/dev/dri
+    privileged: true
     volumes:
       - /home/alex/docker/volumes/plex/config:/config
       - /home/alex/docker/volumes/plex/transcode:/transcode
