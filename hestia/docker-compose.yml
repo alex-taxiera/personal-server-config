@@ -15,5 +15,5 @@ services:
       - /dev/dri:/dev/dri
     volumes:
       - /home/alex/docker/volumes/plex/config:/config
-      - /home/alex/docker/volumes/plex/transcode:/transcode
+      - /mnt/ramdisk/plex/transcode:/transcode
       - /media/folso:/data
