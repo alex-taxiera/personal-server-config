@@ -20,6 +20,7 @@ services:
     devices:
       - /dev/dri:/dev/dri
     privileged: true
+    restart: always
     volumes:
       - /home/alex/docker/volumes/plex/config:/config
       - /home/alex/docker/volumes/plex/transcode:/transcode
