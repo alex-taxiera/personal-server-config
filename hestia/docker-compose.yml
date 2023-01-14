@@ -5,8 +5,9 @@ services:
     image: plexinc/pms-docker
     environment:
       - TZ=America/New_York
-      - ADVERTISE_IP=http://${EXTERNAL_IP}:32400/
+      - ADVERTISE_IP=http://10.4.20.220:32400/
       # - PLEX_CLAIM=<claimToken>
+    hostname: HESTIA
     ports:
       - 32400:32400/tcp
       - 8324:8324/tcp
@@ -16,7 +17,8 @@ services:
       - 32412:32412/udp
       - 32413:32413/udp
       - 32414:32414/udp
-    hostname: HESTIA
+    devices:
+      - /dev/dri/:/dev/dri/
     volumes:
       - /home/alex/docker/volumes/plex/config:/config
       - /home/alex/docker/volumes/plex/transcode:/transcode
