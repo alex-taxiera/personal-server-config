@@ -2,14 +2,13 @@ version: '3.7'
 
 services:
   plex:
-    image: lscr.io/linuxserver/plex:latest
+    image: plexinc/pms-docker
     container_name: plex
     network_mode: host
     privileged: true
     restart: always
     hostname: HESTIA
     environment:
-      VERSION: public
       TZ: America/New_York
       #PLEX_CLAIM: <claimToken>
     devices:
