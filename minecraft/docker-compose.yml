@@ -1,8 +1,8 @@
 version: '3.7'
 
-networks:
-  nginx-proxy:
-    external: true
+# networks:
+#   nginx-proxy:
+#     external: true
 
 services:
   # dynmap:
@@ -48,7 +48,7 @@ services:
         mode: host
     environment:
       TYPE: PAPER
-      MEMORY: 3G
+      MEMORY: 2G
       VERSION: 1.18.1
       MOTD: Vanilla 1.18
       EULA: 'true'
@@ -70,7 +70,7 @@ services:
     environment:
       TYPE: PAPER
       MEMORY: 3G
-      VERSION: 1.19.2
+      VERSION: 1.19.3
       MOTD: Vanilla 1.19
       EULA: 'true'
       ENABLE_RCON: 'true'

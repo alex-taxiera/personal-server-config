@@ -1,6 +1,6 @@
 # Server URLs
 
-## Current (1.18.1)
+## Current (1.19.3)
 mc.taxiera.link
 
 ## Old Versions
@@ -9,7 +9,7 @@ mc.taxiera.link
 | ------- | --- |
 | 1.17.1 | 117.mc.taxiera.link |
 | 1.18.1 | 118.mc.taxiera.link |
-| 1.19.1 | 119.mc.taxiera.link |
+| 1.19.3 | 119.mc.taxiera.link |
 
 
 # Links to Plugins I Use
