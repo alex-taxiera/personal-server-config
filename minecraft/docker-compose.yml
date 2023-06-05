@@ -62,6 +62,8 @@ services:
       - ./plugins/1-18:/plugins
       - ./config/1-18:/config
   1-19:
+    deploy:
+      replicas: 1
     image: itzg/minecraft-server
     ports:
       - target: 25565

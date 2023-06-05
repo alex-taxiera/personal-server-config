@@ -46,15 +46,16 @@ services:
       TZ: America/New_York
       # FILE__USER: /run/secrets/TRANSMISSION_USER
       # FILE__PASS: /run/secrets/TRANSMISSION_PASS
-      HOST_WHITELIST: torrent.taxiera.link
-      VIRTUAL_HOST: torrent.taxiera.link
-      VIRTUAL_PORT: 9091
-      LETSENCRYPT_HOST: torrent.taxiera.link
-      LETSENCRYPT_EMAIL: alex.taxiera@gmail.com
+      # HOST_WHITELIST: torrent.taxiera.link
+      # VIRTUAL_HOST: torrent.taxiera.link
+      # VIRTUAL_PORT: 9091
+      # LETSENCRYPT_HOST: torrent.taxiera.link
+      # LETSENCRYPT_EMAIL: alex.taxiera@gmail.com
     volumes:
       - /mnt/md0/torrents:/downloads
-      - ~/docker/volumes/transmission/config:/config
-      - ~/docker/volumes/transmission/watch:/watch
+      - /mnt/md0:/media
+      - /home/alex/docker/volumes/transmission/config:/config
+      - /home/alex/docker/volumes/transmission/watch:/watch
     ports:
       - 9091:9091
       - 51413:51413
@@ -62,14 +63,33 @@ services:
     networks:
       - nginx-proxy
 
+  simple-file-server:
+    image: alextaxiera/simple-file-server
+    deploy:
+      replicas: 1
+    depends_on:
+      - nginx-letsencrypt
+    networks:
+      - nginx-proxy
+    environment:
+      WRITE_SHARED_KEY:
+      READ_SHARED_KEY:
+      LOG_LEVEL: debug
+      LOCATION_BASE_URL: https://share.taxiera.link
+      VIRTUAL_HOST: share.taxiera.link
+      # VIRTUAL_PORT: 8040
+      LETSENCRYPT_HOST: share.taxiera.link
+      LETSENCRYPT_EMAIL: alex.taxiera@gmail.com
+    volumes:
+      - /mnt/md0/shares:/data
+
   nextcloud:
     image: nextcloud
     deploy:
       replicas: 1
     depends_on:
       - db
-    ports:
-      - 8099:80
+      - nginx-letsencrypt
     networks:
       - postgres_backend_network
       - nginx-proxy
@@ -77,7 +97,7 @@ services:
       - /mnt/md0/nextcloud:/var/www/html/data:rw
       -
         type: bind
-        source: ~/docker/volumes/nextcloud/data
+        source: /home/alex/docker/volumes/nextcloud/data
         target: /var/www/html
     secrets:
       - NX_CLOUD_DB_NAME
@@ -94,7 +114,6 @@ services:
       NEXTCLOUD_ADMIN_USER_FILE: /run/secrets/NX_CLOUD_ADMIN_USER
       NEXTCLOUD_ADMIN_PASSWORD_FILE: /run/secrets/NX_CLOUD_ADMIN_PASS
       VIRTUAL_HOST: files.taxiera.link
-      VIRTUAL_PORT: 8099
       LETSENCRYPT_HOST: files.taxiera.link
       LETSENCRYPT_EMAIL: alex.taxiera@gmail.com
 
@@ -116,7 +135,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       -
         type: bind
-        source: ~/docker/volumes/nextcloud/postgres
+        source: /home/alex/docker/volumes/nextcloud/postgres
         target: /var/lib/postgresql/data
     secrets:
       - NX_CLOUD_DB_NAME
@@ -136,7 +155,7 @@ services:
       POSTGRES_PASSWORD_FILE: /run/secrets/ADMIN_PASS
 
   nginx:
-    image: nginx
+    image: nginxproxy/nginx-proxy
     deploy:
       replicas: 1
     labels:
@@ -151,40 +170,27 @@ services:
         published: 443
         mode: host
     volumes:
-      - ./nginx/unlimited_upload.conf:/etc/nginx/conf.d/unlimited_upload.conf:ro
-      - ~/docker/volumes/nextcloud/nginx/conf.d:/etc/nginx/conf.d
-      - ~/docker/volumes/nextcloud/nginx/vhost.d:/etc/nginx/vhost.d
-      - ~/docker/volumes/nextcloud/nginx/html:/usr/share/nginx/html
-      - ~/docker/volumes/nextcloud/nginx/certs:/etc/nginx/certs:ro
-
-  nginx-gen:
-    image: helder/docker-gen
-    deploy:
-      replicas: 1
-    labels:
-      - com.github.jrcs.letsencrypt_nginx_proxy_companion.docker_gen
-    command: -notify "docker-label-sighup com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy" -watch -wait 10s:30s /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
-    networks:
-      - nginx-proxy
-    volumes:
-      - ~/docker/volumes/nextcloud/nginx/conf.d:/etc/nginx/conf.d
-      - ~/docker/volumes/nextcloud/nginx/vhost.d:/etc/nginx/vhost.d
-      - ~/docker/volumes/nextcloud/nginx/html:/usr/share/nginx/html
-      - ~/docker/volumes/nextcloud/nginx/certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - ./nginx/nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl:ro
+      - /home/alex/docker/volumes/nextcloud/nginx/conf.d:/etc/nginx/conf.d
+      - /home/alex/docker/volumes/nextcloud/nginx/vhost.d:/etc/nginx/vhost.d
+      - /home/alex/docker/volumes/nextcloud/nginx/html:/usr/share/nginx/html
+      - /home/alex/docker/volumes/nextcloud/nginx/certs:/etc/nginx/certs:ro
+      - ./nginx/unlimited_upload.conf:/etc/nginx/conf.d/unlimited_upload.conf:ro
 
   nginx-letsencrypt:
     image: nginxproxy/acme-companion
     deploy:
       replicas: 1
+    depends_on:
+      - nginx
     networks:
       - nginx-proxy
     volumes:
-      - ~/docker/volumes/nextcloud/nginx/conf.d:/etc/nginx/conf.d
-      - ~/docker/volumes/nextcloud/nginx/vhost.d:/etc/nginx/vhost.d
-      - ~/docker/volumes/nextcloud/nginx/html:/usr/share/nginx/html
-      - ~/docker/volumes/nextcloud/nginx/certs:/etc/nginx/certs:rw
+      - /home/alex/docker/volumes/nextcloud/nginx/conf.d:/etc/nginx/conf.d
+      - /home/alex/docker/volumes/nextcloud/nginx/vhost.d:/etc/nginx/vhost.d
+      - /home/alex/docker/volumes/nextcloud/nginx/html:/usr/share/nginx/html
+      - /home/alex/docker/volumes/nextcloud/nginx/certs:/etc/nginx/certs:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /home/alex/docker/volumes/letsencrypt:/etc/acme.sh
     environment:
       DEFAULT_EMAIL: alex.taxiera@gmail.com

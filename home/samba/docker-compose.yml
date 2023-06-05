@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   smbd:
-    image: servercontainers/samba
+    image: ghcr.io/servercontainers/samba
     hostname: samba
     deploy:
       replicas: 1
@@ -10,12 +10,16 @@ services:
       SAMBA_CONF_MAP_TO_GUEST: never
       SAMBA_GLOBAL_CONFIG_unix_SPACE_extensions: 'no'
 
-      ACCOUNT_alex: 'alex:1000:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX:EFB37715BBBCE9F7422983705F5B37F3:[U          ]:LCT-629CBF57:'
-      ACCOUNT_fig: 'fig:1000:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX:33119A56ED8795BDE29B397FE53E128D:[U          ]:LCT-619013C6:'
-      ACCOUNT_debbie: 'debbie:1000:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX:0057729555F7F629DAD83FB54EFC5862:[U          ]:LCT-619013A2:'
-      GROUPS_alex: alex
+      ACCOUNT_alex: 'alex:1010:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX:EFB37715BBBCE9F7422983705F5B37F3:[U          ]:LCT-629CBF57:'
+      ACCOUNT_debbie: 'debbie:1011:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX:0057729555F7F629DAD83FB54EFC5862:[U          ]:LCT-619013A2:'
+      ACCOUNT_fig: 'fig:1012:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX:33119A56ED8795BDE29B397FE53E128D:[U          ]:LCT-619013C6:'
 
-      SAMBA_VOLUME_CONFIG_ADMIN: '[Admin]; path=/mnt/md0; read only = no; valid users = alex; admin users = alex;'
+      GROUP_samba: 1050
+      GROUPS_alex: alex,samba
+      GROUPS_debbie: samba
+      GROUPS_fig: samba
+
+      SAMBA_VOLUME_CONFIG_ADMIN: '[Admin]; path=/mnt/md0; read only = no; valid users = alex, debbie; admin users = alex, debbie;'
       SAMBA_VOLUME_CONFIG_PUBLIC: '[Public]; path=/mnt/md0/samba/public; read only = yes; valid users = debbie, fig, alex; admin users = alex; follow symlinks = yes; wide links = yes'
     ports:
       - target: 137
