@@ -48,7 +48,7 @@ services:
         mode: host
     environment:
       TYPE: PAPER
-      MEMORY: 2G
+      MEMORY: 1G
       VERSION: 1.18.1
       MOTD: Vanilla 1.18
       EULA: 'true'
@@ -71,7 +71,7 @@ services:
         mode: host
     environment:
       TYPE: PAPER
-      MEMORY: 3G
+      MEMORY: 2G
       VERSION: 1.19.3
       MOTD: Vanilla 1.19
       EULA: 'true'

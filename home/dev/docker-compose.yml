@@ -1,8 +1,7 @@
 version: '3.7'
 
 services:
-
-  db:
+  pg:
     image: postgres:12
     deploy:
       replicas: 1

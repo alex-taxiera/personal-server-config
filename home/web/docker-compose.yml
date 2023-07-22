@@ -63,28 +63,8 @@ services:
     networks:
       - nginx-proxy
 
-  simple-file-server:
-    image: alextaxiera/simple-file-server
-    deploy:
-      replicas: 1
-    depends_on:
-      - nginx-letsencrypt
-    networks:
-      - nginx-proxy
-    environment:
-      WRITE_SHARED_KEY:
-      READ_SHARED_KEY:
-      LOG_LEVEL: debug
-      LOCATION_BASE_URL: https://share.taxiera.link
-      VIRTUAL_HOST: share.taxiera.link
-      # VIRTUAL_PORT: 8040
-      LETSENCRYPT_HOST: share.taxiera.link
-      LETSENCRYPT_EMAIL: alex.taxiera@gmail.com
-    volumes:
-      - /mnt/md0/shares:/data
-
   nextcloud:
-    image: nextcloud
+    image: nextcloud:24.0.0
     deploy:
       replicas: 1
     depends_on:
