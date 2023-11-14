@@ -1,56 +1,17 @@
 version: '3.7'
 
-# networks:
-#   nginx-proxy:
-#     external: true
-
 services:
-  # dynmap:
-  #   image: nginx
-  #   deploy:
-  #     replicas: 1
-  #   ports:
-  #     - 8123:80
-  #   networks:
-  #     - nginx-proxy
-  #   environment:
-  #     VIRTUAL_PORT: 8123
-  #     VIRTUAL_HOST: map.mc.taxiera.link
-  #     LETSENCRYPT_HOST: map.mc.taxiera.link
-  #     LETSENCRYPT_EMAIL: alex.taxiera@gmail.com
-  #   volumes:
-  #     - /mnt/md0/minecraft/1.18/plugins/dynmap/web:/var/www/dynmap:ro
-  #     - ./nginx:/etc/nginx/conf.d:ro
-  1-17:
+  glizzy-1-20:
     image: itzg/minecraft-server
-    deploy:
-      replicas: 1
     ports:
       - target: 25565
-        published: 25569
-        mode: host
-    environment:
-      VERSION: 1.17.1
-      MOTD: Vanilla 1.17
-      EULA: 'true'
-      ENABLE_RCON: 'true'
-      RCON_PORT: 28016
-      OVERRIDE_SERVER_PROPERTIES: 'true'
-    volumes:
-      - /mnt/md0/minecraft/1.17:/data
-  1-18:
-    image: itzg/minecraft-server
-    deploy:
-      replicas: 1
-    ports:
-      - target: 25565
-        published: 25579
+        published: 25570
         mode: host
     environment:
       TYPE: PAPER
-      MEMORY: 1G
-      VERSION: 1.18.1
-      MOTD: Vanilla 1.18
+      MEMORY: 2G
+      VERSION: 1.20.2
+      MOTD: Vanilla 1.20
       EULA: 'true'
       ENABLE_RCON: 'true'
       RCON_PORT: 28016
@@ -58,12 +19,31 @@ services:
       SYNC_SKIP_NEWER_IN_DESTINATION: 'false'
       COPY_CONFIG_DEST: /data
     volumes:
-      - /mnt/md0/minecraft/1.18:/data
-      - ./plugins/1-18:/plugins
-      - ./config/1-18:/config
+      - /mnt/disk1/minecraft/glizzy-1.20:/data
+      - ./plugins/glizzy-1.20:/plugins
+      - ./config/glizzy-1.20:/config
+  1-20:
+    image: itzg/minecraft-server
+    ports:
+      - target: 25565
+        published: 25599
+        mode: host
+    environment:
+      TYPE: PAPER
+      MEMORY: 2G
+      VERSION: 1.20.2
+      MOTD: Vanilla 1.20
+      EULA: 'true'
+      ENABLE_RCON: 'true'
+      RCON_PORT: 28016
+      OVERRIDE_SERVER_PROPERTIES: 'true'
+      SYNC_SKIP_NEWER_IN_DESTINATION: 'false'
+      COPY_CONFIG_DEST: /data
+    volumes:
+      - /mnt/disk1/minecraft/1.20:/data
+      - ./plugins/1-20:/plugins
+      - ./config/1-20:/config
   1-19:
-    deploy:
-      replicas: 1
     image: itzg/minecraft-server
     ports:
       - target: 25565
@@ -81,22 +61,20 @@ services:
       SYNC_SKIP_NEWER_IN_DESTINATION: 'false'
       COPY_CONFIG_DEST: /data
     volumes:
-      - /mnt/md0/minecraft/1.19:/data
+      - /mnt/disk1/minecraft/1.19:/data
       - ./plugins/1-19:/plugins
       - ./config/1-19:/config
-  1-20:
-    deploy:
-      replicas: 1
+  1-18:
     image: itzg/minecraft-server
     ports:
       - target: 25565
-        published: 25599
+        published: 25579
         mode: host
     environment:
       TYPE: PAPER
-      MEMORY: 2G
-      VERSION: 1.20.1
-      MOTD: Vanilla 1.20
+      MEMORY: 1G
+      VERSION: 1.18.1
+      MOTD: Vanilla 1.18
       EULA: 'true'
       ENABLE_RCON: 'true'
       RCON_PORT: 28016
@@ -104,6 +82,21 @@ services:
       SYNC_SKIP_NEWER_IN_DESTINATION: 'false'
       COPY_CONFIG_DEST: /data
     volumes:
-      - /mnt/md0/minecraft/1.20:/data
-      - ./plugins/1-20:/plugins
-      - ./config/1-20:/config
+      - /mnt/disk1/minecraft/1.18:/data
+      - ./plugins/1-18:/plugins
+      - ./config/1-18:/config
+  1-17:
+    image: itzg/minecraft-server
+    ports:
+      - target: 25565
+        published: 25569
+        mode: host
+    environment:
+      VERSION: 1.17.1
+      MOTD: Vanilla 1.17
+      EULA: 'true'
+      ENABLE_RCON: 'true'
+      RCON_PORT: 28016
+      OVERRIDE_SERVER_PROPERTIES: 'true'
+    volumes:
+      - /mnt/disk1/minecraft/1.17:/data
