@@ -18,5 +18,13 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       -
         type: bind
-        source: ~/docker/volumes/dev-pg
+        source: /home/alex/docker/volumes/dev-pg
         target: /var/lib/postgresql/data
+  mongo:
+    image: mongo
+    deploy:
+      replicas: 1
+    ports:
+      - 27017:27017
+    volumes:
+      - /home/alex/docker/volumes/dev-mongo:/data/db

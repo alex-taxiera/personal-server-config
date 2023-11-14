@@ -54,7 +54,7 @@ services:
     volumes:
       - /mnt/md0/torrents:/downloads
       - /mnt/md0:/media
-      - /home/alex/docker/volumes/transmission/config:/config
+      - /home/alex//docker/volumes/transmission/config:/config
       - /home/alex/docker/volumes/transmission/watch:/watch
     ports:
       - 9091:9091
