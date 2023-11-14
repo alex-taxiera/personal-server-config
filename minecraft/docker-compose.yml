@@ -20,8 +20,8 @@ services:
       COPY_CONFIG_DEST: /data
     volumes:
       - /mnt/disk1/minecraft/glizzy-1.20:/data
-      - ./plugins/glizzy-1.20:/plugins
-      - ./config/glizzy-1.20:/config
+      - ./plugins/glizzy-1-20:/plugins
+      - ./config/glizzy-1-20:/config
   1-20:
     image: itzg/minecraft-server
     ports:
