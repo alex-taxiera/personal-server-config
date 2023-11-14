@@ -1,0 +1,5 @@
+#!/bin/bash
+mkdir -p ~/docker/volumes/nextcloud/nginx/certs
+mkdir -p ~/docker/volumes/nextcloud/nginx/conf.d
+mkdir -p ~/docker/volumes/nextcloud/nginx/html
+mkdir -p ~/docker/volumes/nextcloud/nginx/vhost.d

@@ -7,7 +7,7 @@ services:
     network_mode: host
     privileged: true
     restart: always
-    hostname: rhea
+    hostname: RHEA
     environment:
       TZ: America/New_York
       #PLEX_CLAIM: <claimToken>
