@@ -10,6 +10,8 @@ services:
     hostname: RHEA
     environment:
       TZ: America/New_York
+      PLEX_UID: 1000
+      PLEX_GID: 1000
       #PLEX_CLAIM: <claimToken>
     devices:
       - /dev/dri:/dev/dri
