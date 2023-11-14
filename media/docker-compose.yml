@@ -14,7 +14,7 @@ services:
     devices:
       - /dev/dri:/dev/dri
     ports:
-      32410:32400/tcp
+      - 32410:32400/tcp
     volumes:
       - /home/alex/docker/volumes/plex/config:/config
       - /merge/disk1:/data
