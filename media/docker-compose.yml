@@ -4,6 +4,7 @@ services:
   plex:
     image: plexinc/pms-docker
     container_name: plex
+    network_mode: host
     privileged: true
     restart: always
     hostname: rhea
@@ -12,8 +13,6 @@ services:
       #PLEX_CLAIM: <claimToken>
     devices:
       - /dev/dri:/dev/dri
-    ports:
-      - 32410:32400/tcp
     volumes:
       - /home/alex/docker/volumes/plex/config:/config
       - /merge/disk1:/data
