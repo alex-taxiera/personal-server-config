@@ -25,9 +25,7 @@ services:
   1-20:
     image: itzg/minecraft-server
     ports:
-      - target: 25565
-        published: 25599
-        mode: host
+      - 25599:25565
     environment:
       TYPE: PAPER
       MEMORY: 2G
