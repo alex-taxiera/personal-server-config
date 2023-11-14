@@ -15,9 +15,9 @@ services:
       - /dev/dri:/dev/dri
     volumes:
       - /home/alex/docker/volumes/plex/config:/config
-      - /merge/disk1:/data
       -
         type: tmpfs
         target: /transcode
         tmpfs:
           size: 50000
+      - /merge/disk1:/data
