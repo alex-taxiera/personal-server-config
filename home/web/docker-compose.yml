@@ -31,6 +31,8 @@ services:
     image: flaviostutz/simple-file-server
     ports:
       - 4000:4000
+    volumes:
+      - /mnt/md0/shares:/data
     environment:
       LOCATION_BASE_URL: https://share.taxiera.link
       LOG_LEVEL: debug
