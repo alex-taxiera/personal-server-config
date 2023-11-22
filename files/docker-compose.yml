@@ -11,8 +11,6 @@ version: '3.7'
 services:
   transmission:
     image: ghcr.io/linuxserver/transmission
-    deploy:
-      replicas: 1
     # secrets:
     #   - TRANSMISSION_USER
     #   - TRANSMISSION_PASS
