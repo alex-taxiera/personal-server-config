@@ -30,6 +30,8 @@ services:
     image: alextaxiera/simple-file-server
     volumes:
       - /mnt/md0/shares:/data
+    networks:
+      - nginx-proxy
     environment:
       LOCATION_BASE_URL: https://share.taxiera.link
       LOG_LEVEL: debug
