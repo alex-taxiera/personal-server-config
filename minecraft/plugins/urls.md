@@ -1,9 +1,9 @@
 # Server URLs
 
-## Current (1.19.3)
+## Main (1.20.2)
 mc.taxiera.link
 
-## Old Versions
+### Old Versions
 
 | Version | URL |
 | ------- | --- |
@@ -11,6 +11,15 @@ mc.taxiera.link
 | 1.18.1 | 118.mc.taxiera.link |
 | 1.19.3 | 119.mc.taxiera.link |
 | 1.20.0 | 120.mc.taxiera.link |
+
+## Glizzy (1.20.2)
+glizzy.mc.taxiera.link
+
+### Old Versions
+
+| Version | URL |
+| ------- | --- |
+| 1.20.2 | 120.glizzy.mc.taxiera.link |
 
 
 # Links to Plugins I Use

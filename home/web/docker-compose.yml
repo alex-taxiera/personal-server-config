@@ -24,45 +24,20 @@ secrets:
     external: true
   NX_CLOUD_ADMIN_PASS:
     external: true
-  TRANSMISSION_USER:
-    external: true
-  TRANSMISSION_PASS:
-    external: true
-  TRANSMISSION_IP_WHITELIST:
-    external: true
 
 services:
-  transmission:
-    image: ghcr.io/linuxserver/transmission
-    deploy:
-      replicas: 1
-    secrets:
-      - TRANSMISSION_USER
-      - TRANSMISSION_PASS
-      - TRANSMISSION_IP_WHITELIST
-    environment:
-      PUID: 1000
-      PGID: 1000
-      TZ: America/New_York
-      # FILE__USER: /run/secrets/TRANSMISSION_USER
-      # FILE__PASS: /run/secrets/TRANSMISSION_PASS
-      # HOST_WHITELIST: torrent.taxiera.link
-      # VIRTUAL_HOST: torrent.taxiera.link
-      # VIRTUAL_PORT: 9091
-      # LETSENCRYPT_HOST: torrent.taxiera.link
-      # LETSENCRYPT_EMAIL: alex.taxiera@gmail.com
-    volumes:
-      - /mnt/md0/torrents:/downloads
-      - /mnt/md0:/media
-      - /home/alex//docker/volumes/transmission/config:/config
-      - /home/alex/docker/volumes/transmission/watch:/watch
+  simple-file-server:
+    build: .
+    image: flaviostutz/simple-file-server
     ports:
-      - 9091:9091
-      - 51413:51413
-      - 51413:51413/udp
-    networks:
-      - nginx-proxy
-
+      - 4000:4000
+    environment:
+      LOCATION_BASE_URL: https://share.taxiera.link
+      LOG_LEVEL: debug
+      VIRTUAL_PORT: 4000
+      VIRTUAL_HOST: share.taxiera.link
+      LETSENCRYPT_HOST: share.taxiera.link
+      LETSENCRYPT_EMAIL: alex.taxiera@gmail.com
   nextcloud:
     image: nextcloud:24.0.0
     deploy:
