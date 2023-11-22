@@ -1,0 +1,39 @@
+version: '3.7'
+
+# secrets:
+#   TRANSMISSION_USER:
+#     external: true
+#   TRANSMISSION_PASS:
+#     external: true
+#   TRANSMISSION_IP_WHITELIST:
+#     external: true
+
+services:
+  transmission:
+    image: ghcr.io/linuxserver/transmission
+    deploy:
+      replicas: 1
+    # secrets:
+    #   - TRANSMISSION_USER
+    #   - TRANSMISSION_PASS
+    #   - TRANSMISSION_IP_WHITELIST
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: America/New_York
+      # FILE__USER: /run/secrets/TRANSMISSION_USER
+      # FILE__PASS: /run/secrets/TRANSMISSION_PASS
+      # HOST_WHITELIST: torrent.taxiera.link
+      # VIRTUAL_HOST: torrent.taxiera.link
+      # VIRTUAL_PORT: 9091
+      # LETSENCRYPT_HOST: torrent.taxiera.link
+      # LETSENCRYPT_EMAIL: alex.taxiera@gmail.com
+    volumes:
+      - /mnt/disk1/torrents:/downloads
+      - /mnt/disk1:/media
+      - /home/alex/docker/volumes/transmission/config:/config
+      - /home/alex/docker/volumes/transmission/watch:/watch
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
