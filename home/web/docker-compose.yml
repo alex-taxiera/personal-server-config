@@ -27,16 +27,12 @@ secrets:
 
 services:
   simple-file-server:
-    build: .
-    image: flaviostutz/simple-file-server
-    ports:
-      - 4000:4000
+    image: alextaxiera/simple-file-server
     volumes:
       - /mnt/md0/shares:/data
     environment:
       LOCATION_BASE_URL: https://share.taxiera.link
       LOG_LEVEL: debug
-      VIRTUAL_PORT: 4000
       VIRTUAL_HOST: share.taxiera.link
       LETSENCRYPT_HOST: share.taxiera.link
       LETSENCRYPT_EMAIL: alex.taxiera@gmail.com
