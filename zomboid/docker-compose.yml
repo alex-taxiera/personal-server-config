@@ -2,10 +2,15 @@ version: '3.7'
 
 services:
   main:
-    image: docker.io/renegademaster/zomboid-dedicated-server:latest
+    image: zomboid-dedicated-server
+    build:
+      context: https://github.com/alex-taxiera/zomboid-dedicated-server.git#my-fixes
+      dockerfile: docker/zomboid-dedicated-server.Dockerfile
+      args:
+        BASE_IMAGE: docker.io/renegademaster/steamcmd-minimal:2.0.0-root
     environment:
-      - "ADMIN_PASSWORD=Horsea@13"
       - "ADMIN_USERNAME=superuser"
+      - "ADMIN_PASSWORD=superuser"
       - "AUTOSAVE_INTERVAL=15"
       - "BIND_IP=0.0.0.0"
       - "DEFAULT_PORT=16261"
@@ -18,10 +23,8 @@ services:
       - "MOD_WORKSHOP_IDS="
       - "PAUSE_ON_EMPTY=true"
       - "PUBLIC_SERVER=false"
-      - "RCON_PASSWORD=Horsea@13"
       - "RCON_PORT=27015"
-      - "SERVER_NAME=ZomboidServer"
-      - "SERVER_PASSWORD=horsea13"
+      - "SERVER_NAME=A Very Cool Vanilla Server"
       - "STEAM_VAC=true"
       - "UDP_PORT=16262"
       - "USE_STEAM=true"
