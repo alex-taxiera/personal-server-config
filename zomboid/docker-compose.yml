@@ -22,8 +22,8 @@ services:
       - "MOD_NAMES="
       - "MOD_WORKSHOP_IDS="
       - "PAUSE_ON_EMPTY=true"
-      - "PUBLIC_SERVER=false"
-      - "RCON_PORT=27015"
+      - "PUBLIC_SERVER=true"
+      #- "RCON_PORT=27015"
       - "SERVER_NAME=A Very Cool Vanilla Server"
       - "STEAM_VAC=true"
       - "UDP_PORT=16262"
@@ -40,5 +40,5 @@ services:
         published: 27015
         protocol: tcp
     volumes:
-      - /home/alex/docker/volumes/zomboid/ZomboidDedicatedServer:/home/steam/ZomboidDedicatedServer
-      - /home/alex/docker/volumes/zomboid/ZomboidConfig:/home/steam/Zomboid/
+      - /mnt/disk1/zomboid/ZomboidDedicatedServer:/home/steam/ZomboidDedicatedServer
+      - /mnt/disk1/zomboid/ZomboidConfig:/home/steam/Zomboid/

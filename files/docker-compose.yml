@@ -64,7 +64,7 @@ services:
       GROUPS_debbie: samba
       GROUPS_fig: samba
 
-      SAMBA_VOLUME_CONFIG_ADMIN: '[Admin]; path=/mnt/disk1; read only = no; valid users = alex, debbie; admin users = alex, debbie;'
+      SAMBA_VOLUME_CONFIG_ADMIN: '[Admin]; path=/mnt/disk1; read only = no; valid users = alex, debbie; admin users = alex, debbie; follow symlinks = yes; wide links = yes'
       SAMBA_VOLUME_CONFIG_PUBLIC: '[Public]; path=/mnt/disk1/samba/public; read only = yes; valid users = debbie, fig, alex; admin users = alex; follow symlinks = yes; wide links = yes'
     ports:
       - target: 137
