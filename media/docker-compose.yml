@@ -4,15 +4,7 @@ services:
   plex:
     image: plexinc/pms-docker
     restart: unless-stopped
-    ports:
-      - "32400"
-      - "8324"
-      - "32469"
-      - "1900/udp"
-      - "32410/udp"
-      - "32412/udp"
-      - "32413/udp"
-      - "32414/udp"
+    network_mode: host
     environment:
       TZ: America/New_York
       PLEX_UID: 1000
