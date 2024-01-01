@@ -10,6 +10,7 @@ version: '3.7'
 
 services:
   transmission:
+    restart: unless-stopped
     image: ghcr.io/linuxserver/transmission
     # secrets:
     #   - TRANSMISSION_USER
@@ -36,6 +37,7 @@ services:
       - 51413:51413
       - 51413:51413/udp
   vsftpd:
+    restart: unless-stopped
     image: fauria/vsftpd
     ports:
       - 20-21:20-21
@@ -50,6 +52,7 @@ services:
       PASV_ADDR_RESOLVE: 'YES'
       REVERSE_LOOKUP_ENABLE: 'NO'
   samba:
+    restart: unless-stopped
     image: ghcr.io/servercontainers/samba
     environment:
       SAMBA_CONF_MAP_TO_GUEST: never

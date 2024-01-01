@@ -4,11 +4,11 @@ services:
   plex:
     image: plexinc/pms-docker
     network_mode: host
-    privileged: true
-    restart: always
-    hostname: RHEA
+    restart: unless-stopped
     environment:
       TZ: America/New_York
+      PLEX_UID: 1000
+      PLEX_GID: 1000
       #PLEX_CLAIM: <claimToken>
     devices:
       - /dev/dri:/dev/dri

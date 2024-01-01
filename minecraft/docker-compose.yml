@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   glizzy-1-20:
+    restart: unless-stopped
     image: itzg/minecraft-server
     ports:
       - target: 25565
@@ -23,6 +24,7 @@ services:
       - ./plugins/glizzy-1-20:/plugins
       - ./config/glizzy-1-20:/config
   1-20:
+    restart: unless-stopped
     image: itzg/minecraft-server
     ports:
       - 25599:25565
@@ -42,6 +44,7 @@ services:
       - ./plugins/1-20:/plugins
       - ./config/1-20:/config
   1-19:
+    restart: unless-stopped
     image: itzg/minecraft-server
     ports:
       - target: 25565
@@ -63,6 +66,7 @@ services:
       - ./plugins/1-19:/plugins
       - ./config/1-19:/config
   1-18:
+    restart: unless-stopped
     image: itzg/minecraft-server
     ports:
       - target: 25565
@@ -84,6 +88,7 @@ services:
       - ./plugins/1-18:/plugins
       - ./config/1-18:/config
   1-17:
+    restart: unless-stopped
     image: itzg/minecraft-server
     ports:
       - target: 25565
