@@ -12,5 +12,7 @@ services:
       - MAX_PLAYERS=16
       - MULTITHREAD_ENABLED=true
       - COMMUNITY_SERVER=false
+      - PUBLIC_IP=meadowbrook.taxiera.link
+      - PUBLIC_PORT=8211
     volumes:
       - /mnt/disk1/palworld/main:/palworld
