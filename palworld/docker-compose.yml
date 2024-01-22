@@ -16,3 +16,19 @@ services:
       - PUBLIC_PORT=8211
     volumes:
       - /mnt/disk1/palworld/main:/palworld
+
+  glizzy:
+    image: jammsen/palworld-dedicated-server:latest
+    restart: unless-stopped
+    ports:
+      - "8222:8211/udp"
+    environment:
+      - ALWAYS_UPDATE_ON_START=false
+      - GAME_PORT=8211
+      - MAX_PLAYERS=16
+      - MULTITHREAD_ENABLED=true
+      - COMMUNITY_SERVER=false
+      - PUBLIC_IP=meadowbrook.taxiera.link
+      - PUBLIC_PORT=8222
+    volumes:
+      - /mnt/disk1/palworld/glizzy:/palworld
