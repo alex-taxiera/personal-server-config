@@ -39,9 +39,12 @@ services:
       VIRTUAL_PORT: 8096
     volumes:
       - /home/alex/docker/volumes/emby/config:/config # Configuration directory
-      - /mnt/disk1/videos/shows:/mnt/share1 # Media directory
-      - /mnt/disk1/videos/movies:/mnt/share2 # Media directory
-      - /mnt/disk1/videos/anime:/mnt/share3 # Media directory
+      - /mnt/disk1/videos:/mnt/videos # Media directory
+      -
+        type: tmpfs
+        target: /config/transcoding-temp
+        tmpfs:
+          size: "5368709120"
     ports:
       - 8096:8096 # HTTP port
       - 8920:8920 # HTTPS port
