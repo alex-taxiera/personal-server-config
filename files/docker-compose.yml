@@ -95,6 +95,7 @@ services:
       - CAP_NET_ADMIN
   simple-file-server:
     image: alextaxiera/simple-file-server
+    restart: unless-stopped
     volumes:
       - /mnt/disk1/shares:/data
     networks:
