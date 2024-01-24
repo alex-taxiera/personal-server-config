@@ -1,5 +1,9 @@
 version: '3.7'
 
+networks:
+  nginx-proxy:
+    external: true
+
 # secrets:
 #   TRANSMISSION_USER:
 #     external: true
@@ -89,3 +93,15 @@ services:
       - /mnt/disk1/samba/public:/mnt/disk1/samba/public
     cap_add:
       - CAP_NET_ADMIN
+  simple-file-server:
+    image: alextaxiera/simple-file-server
+    volumes:
+      - /mnt/disk1/shares:/data
+    networks:
+      - nginx-proxy
+    environment:
+      LOCATION_BASE_URL: https://share.taxiera.link
+      LOG_LEVEL: debug
+      VIRTUAL_HOST: share.taxiera.link
+      LETSENCRYPT_HOST: share.taxiera.link
+      LETSENCRYPT_EMAIL: alex.taxiera@gmail.com
