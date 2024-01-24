@@ -31,7 +31,7 @@ services:
     image: nginxproxy/acme-companion
     restart: unless-stopped
     depends_on:
-      - nginx
+      - proxy
     networks:
       - nginx-proxy
     volumes:
