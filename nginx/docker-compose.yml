@@ -7,6 +7,7 @@ networks:
 services:
   nginx:
     image: nginxproxy/nginx-proxy
+    restart: unless-stopped
     labels:
       - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
     networks:
@@ -28,6 +29,7 @@ services:
 
   nginx-letsencrypt:
     image: nginxproxy/acme-companion
+    restart: unless-stopped
     depends_on:
       - nginx
     networks:
