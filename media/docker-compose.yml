@@ -52,3 +52,20 @@ services:
       - /dev/dri:/dev/dri # VAAPI/NVDEC/NVENC render nodes
       # - /dev/vchiq:/dev/vchiq # MMAL/OMX on Raspberry Pi
     restart: unless-stopped
+  jellyfin:
+    image: jellyfin/jellyfin
+    user: 1000:1000
+    volumes:
+      - /home/alex/docker/volumes/jellyfin/config:/config
+      - /home/alex/docker/volumes/jellyfin/cache:/cache
+      - /mnt/disk1/videos:/media:ro
+    restart: 'unless-stopped'
+    environment:
+      JELLYFIN_PublishedServerUrl: https://jellyfin.meadowbrook.taxiera.link
+      LETSENCRYPT_HOST: jellyfin.meadowbrook.taxiera.link
+      LETSENCRYPT_EMAIL: alex.taxiera@gmail.com
+      VIRTUAL_HOST: jellyfin.meadowbrook.taxiera.link
+      VIRTUAL_PORT: 8096
+    # Optional - may be necessary for docker healthcheck to pass if running in host network mode
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
