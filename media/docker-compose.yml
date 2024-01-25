@@ -1,9 +1,5 @@
 version: '3.7'
 
-networks:
-  nginx-proxy:
-    external: true
-
 services:
   plex:
     image: plexinc/pms-docker
@@ -18,54 +14,9 @@ services:
       - /dev/dri:/dev/dri
     volumes:
       - /home/alex/docker/volumes/plex/config:/config
+      - /mnt/disk1:/data:ro
       -
         type: tmpfs
         target: /transcode
         tmpfs:
           size: "5368709120"
-      - /mnt/disk1:/data
-  emby:
-    image: emby/embyserver
-    # runtime: nvidia # Expose NVIDIA GPUs
-    networks:
-      - nginx-proxy
-    environment:
-      UID: 1000 # The UID to run emby as (default: 2)
-      GID: 1000 # The GID to run emby as (default 2)
-      GIDLIST: 1000 # A comma-separated list of additional GIDs to run emby as (default: 2)
-      LETSENCRYPT_HOST: media.taxiera.link
-      LETSENCRYPT_EMAIL: alex.taxiera@gmail.com
-      VIRTUAL_HOST: media.taxiera.link
-      VIRTUAL_PORT: 8096
-    volumes:
-      - /home/alex/docker/volumes/emby/config:/config # Configuration directory
-      - /mnt/disk1/videos:/mnt/videos # Media directory
-      -
-        type: tmpfs
-        target: /config/transcoding-temp
-        tmpfs:
-          size: "5368709120"
-    ports:
-      - 8096:8096 # HTTP port
-      - 8920:8920 # HTTPS port
-    devices:
-      - /dev/dri:/dev/dri # VAAPI/NVDEC/NVENC render nodes
-      # - /dev/vchiq:/dev/vchiq # MMAL/OMX on Raspberry Pi
-    restart: unless-stopped
-  jellyfin:
-    image: jellyfin/jellyfin
-    user: 1000:1000
-    volumes:
-      - /home/alex/docker/volumes/jellyfin/config:/config
-      - /home/alex/docker/volumes/jellyfin/cache:/cache
-      - /mnt/disk1/videos:/media:ro
-    restart: 'unless-stopped'
-    environment:
-      JELLYFIN_PublishedServerUrl: https://jellyfin.meadowbrook.taxiera.link
-      LETSENCRYPT_HOST: jellyfin.meadowbrook.taxiera.link
-      LETSENCRYPT_EMAIL: alex.taxiera@gmail.com
-      VIRTUAL_HOST: jellyfin.meadowbrook.taxiera.link
-      VIRTUAL_PORT: 8096
-    # Optional - may be necessary for docker healthcheck to pass if running in host network mode
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
