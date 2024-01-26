@@ -5,7 +5,8 @@ services:
     image: jammsen/palworld-dedicated-server:latest
     restart: unless-stopped
     ports:
-      - "8211:8211/udp"
+      - 8211:8211/udp
+      - 25571:25575
     environment:
       - ALWAYS_UPDATE_ON_START=false
       - GAME_PORT=8211
@@ -21,7 +22,8 @@ services:
     image: jammsen/palworld-dedicated-server:latest
     restart: unless-stopped
     ports:
-      - "8222:8211/udp"
+      - 8222:8211/udp
+      - 25581:25575
     environment:
       - ALWAYS_UPDATE_ON_START=false
       - GAME_PORT=8211
