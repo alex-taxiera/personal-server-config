@@ -88,3 +88,14 @@ services:
       # - type: bind
       #   source: /home/jamie/Pictures
       #   target: /var/home-jamie-pictures
+
+  ersatstv:
+    image: jasongdove/ersatztv
+    restart: unless-stopped
+    ports:
+      - 8409:8409
+    environment:
+      TZ: America/New_York
+    volumes:
+      - /home/alex/docker/volumes/ersatstv/config:/root/.local/share/ersatstv
+      - storage:/data:ro
