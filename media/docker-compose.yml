@@ -1,4 +1,6 @@
-version: '3.7'
+volumes:
+  storage:
+    external: true 
 
 services:
   plex:
@@ -14,7 +16,7 @@ services:
       - /dev/dri:/dev/dri
     volumes:
       - /home/alex/docker/volumes/plex/config:/config
-      - /mnt/disk1:/data:ro
+      - storage:/data:ro
       -
         type: tmpfs
         target: /transcode

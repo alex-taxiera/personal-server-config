@@ -1,4 +1,6 @@
-version: '3.7'
+volumes:
+  storage:
+    external: true 
 
 services:
   main:
@@ -39,5 +41,15 @@ services:
 #        published: 27015
 #        protocol: tcp
     volumes:
-      - /mnt/disk1/zomboid/ZomboidDedicatedServer:/home/steam/ZomboidDedicatedServer
-      - /mnt/disk1/zomboid/ZomboidConfig:/home/steam/Zomboid/
+      -
+        type: volume
+        source: storage
+        target: /home/steam/ZomboidDedicatedServer
+        volume:
+          subpath: zomboid/ZomboidDedicatedServer
+      -
+        type: volume
+        source: storage
+        target: /home/steam/Zomboid
+        volume:
+          subpath: zomboid/ZomboidConfig

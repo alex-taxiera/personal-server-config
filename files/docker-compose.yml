@@ -1,8 +1,10 @@
-version: '3.7'
-
 networks:
   nginx-proxy:
     external: true
+
+volumes:
+  storage:
+    external: true 
 
 # secrets:
 #   TRANSMISSION_USER:
@@ -32,8 +34,13 @@ services:
       # LETSENCRYPT_HOST: torrent.taxiera.link
       # LETSENCRYPT_EMAIL: alex.taxiera@gmail.com
     volumes:
-      - /mnt/disk1/torrents:/downloads
-      - /mnt/disk1:/media
+      -
+        type: volume
+        source: storage
+        target: /downloads
+        volume:
+          subpath: torrents
+      - storage:/media
       - /home/alex/docker/volumes/transmission/config:/config
       - /home/alex/docker/volumes/transmission/watch:/watch
     ports:
@@ -47,7 +54,12 @@ services:
       - 20-21:20-21
       - 21100-21110:21100-21110
     volumes:
-      - /mnt/disk1/videos:/home/vsftpd/alex/videos
+      -
+        type: volume
+        source: storage
+        target: /home/vsftpd/alex/videos
+        volume:
+          subpath: videos
     environment:
       FTP_USER: alex
       PASV_ADDRESS: meadowbrook.taxiera.link
@@ -71,8 +83,8 @@ services:
       GROUPS_debbie: samba
       GROUPS_fig: samba
 
-      SAMBA_VOLUME_CONFIG_ADMIN: '[Admin]; path=/mnt/disk1; read only = no; valid users = alex, debbie; admin users = alex, debbie; follow symlinks = yes; wide links = yes'
-      SAMBA_VOLUME_CONFIG_PUBLIC: '[Public]; path=/mnt/disk1/samba/public; read only = yes; valid users = debbie, fig, alex; admin users = alex; follow symlinks = yes; wide links = yes'
+      SAMBA_VOLUME_CONFIG_ADMIN: '[Admin]; path=/storage; read only = no; valid users = alex, debbie; admin users = alex, debbie; follow symlinks = yes; wide links = yes'
+      SAMBA_VOLUME_CONFIG_PUBLIC: '[Public]; path=/storage/samba/public; read only = yes; valid users = debbie, fig, alex; admin users = alex; follow symlinks = yes; wide links = yes'
     ports:
       - target: 137
         published: 137
@@ -89,15 +101,26 @@ services:
         published: 445
         mode: host
     volumes:
-      - /mnt/disk1:/mnt/disk1
-      - /mnt/disk1/samba/public:/mnt/disk1/samba/public
+      - storage:/storage
+      # - storage/samba/public:/storage/samba/public
+      -
+        type: volume
+        source: storage
+        target: /storage/samba/public
+        volume:
+          subpath: samba/public
     cap_add:
       - CAP_NET_ADMIN
   simple-file-server:
     image: alextaxiera/simple-file-server
     restart: unless-stopped
     volumes:
-      - /mnt/disk1/shares:/data
+      -
+        type: volume
+        source: storage
+        target: /data
+        volume:
+          subpath: shares
     networks:
       - nginx-proxy
     environment:

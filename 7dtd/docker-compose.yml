@@ -1,4 +1,6 @@
-version: '3.7'
+volumes:
+  storage:
+    external: true 
 
 services:
   main:
@@ -29,11 +31,36 @@ services:
       - BACKUP=NO # Optional - Backup server at 5 AM
       - MONITOR=NO # Optional - Keeps server up if crash
     volumes:
-      - /mnt/disk1/7dtd/main/7DaysToDie:/home/sdtdserver/.local/share/7DaysToDie/
-      - /mnt/disk1/7dtd/main/LGSM-Config:/home/sdtdserver/lgsm/config-lgsm/sdtdserver
-      - /mnt/disk1/7dtd/main/ServerFiles:/home/sdtdserver/serverfiles/ # Optional - serverfiles folder
-      - /mnt/disk1/7dtd/main/log:/home/sdtdserver/log/ # Optional - Logs folder
-      - /mnt/disk1/7dtd/main/backups:/home/sdtdserver/lgsm/backup/ # Optional - If BACKUP=NO, backups folder
+      -
+        type: volume
+        source: storage
+        target: /home/sdtdserver/.local/share/7DaysToDie
+        volume:
+          subpath: 7dtd/main/7DaysToDie
+      -
+        type: volume
+        source: storage
+        target: /home/sdtdserver/lgsm/config-lgsm/sdtdserver
+        volume:
+          subpath: 7dtd/main/LGSM-Config
+      -
+        type: volume
+        source: storage
+        target: /home/sdtdserver/serverfiles
+        volume:
+          subpath: 7dtd/main/ServerFiles
+      -
+        type: volume
+        source: storage
+        target: /home/sdtdserver/log
+        volume:
+          subpath: 7dtd/main/log
+      -
+        type: volume
+        source: storage
+        target: /home/sdtdserver/lgsm/backup
+        volume:
+          subpath: 7dtd/main/backups
     ports:
       - 26900:26900/tcp # Default game ports
       - 26900:26900/udp # Default game ports

@@ -1,4 +1,6 @@
-version: '3.9'
+volumes:
+  storage:
+    external: true 
 
 services:
   main:
@@ -16,7 +18,12 @@ services:
       - PUBLIC_IP=meadowbrook.taxiera.link
       - PUBLIC_PORT=8211
     volumes:
-      - /mnt/disk1/palworld/main:/palworld
+      -
+        type: volume
+        source: storage
+        target: /palworld
+        volume:
+          subpath: palworld/main
 
   glizzy:
     image: jammsen/palworld-dedicated-server:latest
@@ -33,4 +40,9 @@ services:
       - PUBLIC_IP=meadowbrook.taxiera.link
       - PUBLIC_PORT=8222
     volumes:
-      - /mnt/disk1/palworld/glizzy:/palworld
+      -
+        type: volume
+        source: storage
+        target: /palworld
+        volume:
+          subpath: palworld/glizzy

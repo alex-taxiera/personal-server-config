@@ -1,4 +1,6 @@
-version: '3.7'
+volumes:
+  storage:
+    external: true 
 
 services:
   glizzy-1-20:
@@ -20,9 +22,15 @@ services:
       SYNC_SKIP_NEWER_IN_DESTINATION: 'false'
       COPY_CONFIG_DEST: /data
     volumes:
-      - /mnt/disk1/minecraft/glizzy-1.20:/data
       - ./plugins/glizzy-1-20:/plugins
       - ./config/glizzy-1-20:/config
+      -
+        type: volume
+        source: storage
+        target: /data
+        volume:
+          subpath: minecraft/glizzy-1.20
+
   1-20:
     restart: unless-stopped
     image: itzg/minecraft-server
@@ -40,9 +48,14 @@ services:
       SYNC_SKIP_NEWER_IN_DESTINATION: 'false'
       COPY_CONFIG_DEST: /data
     volumes:
-      - /mnt/disk1/minecraft/1.20:/data
       - ./plugins/1-20:/plugins
       - ./config/1-20:/config
+      - type: volume
+        source: storage
+        target: /data
+        volume:
+          subpath: minecraft/1.20
+
   1-19:
     restart: unless-stopped
     image: itzg/minecraft-server
@@ -62,9 +75,15 @@ services:
       SYNC_SKIP_NEWER_IN_DESTINATION: 'false'
       COPY_CONFIG_DEST: /data
     volumes:
-      - /mnt/disk1/minecraft/1.19:/data
       - ./plugins/1-19:/plugins
       - ./config/1-19:/config
+      -
+        type: volume
+        source: storage
+        target: /data
+        volume:
+          subpath: minecraft/1.19
+
   1-18:
     restart: unless-stopped
     image: itzg/minecraft-server
@@ -84,9 +103,15 @@ services:
       SYNC_SKIP_NEWER_IN_DESTINATION: 'false'
       COPY_CONFIG_DEST: /data
     volumes:
-      - /mnt/disk1/minecraft/1.18:/data
       - ./plugins/1-18:/plugins
       - ./config/1-18:/config
+      -
+        type: volume
+        source: storage
+        target: /data
+        volume:
+          subpath: minecraft/1.18
+
   1-17:
     restart: unless-stopped
     image: itzg/minecraft-server
@@ -102,4 +127,10 @@ services:
       RCON_PORT: 28016
       OVERRIDE_SERVER_PROPERTIES: 'true'
     volumes:
+      -
+        type: volume
+        source: storage
+        target: /data
+        volume:
+          subpath: minecraft/1.17
       - /mnt/disk1/minecraft/1.17:/data
