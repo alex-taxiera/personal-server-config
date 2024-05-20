@@ -22,3 +22,69 @@ services:
         target: /transcode
         tmpfs:
           size: "5368709120"
+
+  photostructure:
+    image: photostructure/server
+    restart: unless-stopped
+
+    # PhotoStructure needs some time to close the database cleanly.
+    # (It should normally only take seconds, but 2m accounts for
+    # a spun-down, remote, old HDD hosting a very large library):
+    stop_grace_period: 2m
+
+    ports:
+      - 1787:1787/tcp
+
+    environment:
+      # PhotoStructure has _tons_ of settings. See
+      # <https://photostructure.com/faq/environment-variables/>
+
+      # If PhotoStructure is refusing to spin up, uncomment these lines to see what's going on:
+      # - "PS_LOG_LEVEL=info"
+      # - "PS_LOG_STDOUT=true"
+      TZ: America/New_York
+      PUID: 1000
+      PGID: 1000
+
+    volumes:
+      # /ps/library is where your PhotoStructure Library will be stored.
+      # It must be readable, writable, and have sufficient free space.
+      # If it is a remote volume, uncomment the PS_FORCE_LOCAL_DB_REPLICA
+      # environment line below.
+
+      - type: volume
+        source: storage
+        target: /ps/library
+        volume:
+          subpath: photostructure
+
+      # NOTE: if /ps/library is a fast local disk, you can delete 
+      # the other /ps/... bind mounts below.
+      
+      # /ps/tmp must be fast, local disk with many gigabytes free.
+      # PhotoStructure will use this directory for file caching
+      # and for storing a temporary database replica when your
+      # library is on a remote volume.
+
+      # - type: bind
+      #   source: "${HOME}/.cache/photostructure"
+      #   target: /ps/tmp
+
+      # - type: bind
+      #   source: "${HOME}/.config/PhotoStructure-docker"
+      #   target: /ps/config
+
+      # - type: bind
+      #   source: "${HOME}/.config/PhotoStructure/logs"
+      #   target: /ps/logs
+
+      - type: volume
+        source: storage
+        target: /var/debbie
+        volume:
+          subpath: photos/debbie
+
+      # Here's an example directory to scan:
+      # - type: bind
+      #   source: /home/jamie/Pictures
+      #   target: /var/home-jamie-pictures
