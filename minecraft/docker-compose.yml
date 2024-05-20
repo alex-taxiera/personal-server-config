@@ -133,4 +133,33 @@ services:
         target: /data
         volume:
           subpath: minecraft/1.17
-      - /mnt/disk1/minecraft/1.17:/data
+
+  b1-7-3:
+    restart: unless-stopped
+    image: itzg/minecraft-server
+    ports:
+      - 25566:25565
+      - 28816:28016 # rcon?
+    environment:
+      TYPE: CUSTOM
+      CUSTOM_SERVER: /custom-server/canyon-server.jar
+      MEMORY: 2G
+      VERSION: b1.7.3
+      DISABLE_HEALTHCHECK: 'true' # doesn't exist in version 1.7.3
+      MOTD: Canyon b1.7.3
+      EULA: 'true'
+      ENABLE_RCON: 'true'
+      RCON_PORT: 28016
+      OVERRIDE_SERVER_PROPERTIES: 'true'
+      SYNC_SKIP_NEWER_IN_DESTINATION: 'false'
+      COPY_CONFIG_DEST: /data
+    volumes:
+      - ./custom:/custom-server
+      - ./plugins/b1-7-3:/plugins
+      - ./config/b1-7-3:/config
+      -
+        type: volume
+        source: storage
+        target: /data
+        volume:
+          subpath: minecraft/b1.7.3
