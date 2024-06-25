@@ -40,8 +40,8 @@ services:
       # <https://photostructure.com/faq/environment-variables/>
 
       # If PhotoStructure is refusing to spin up, uncomment these lines to see what's going on:
-      # - "PS_LOG_LEVEL=info"
-      # - "PS_LOG_STDOUT=true"
+      #PS_LOG_LEVEL: info
+      #PS_LOG_STDOUT: true
       TZ: America/New_York
       PUID: 1000
       PGID: 1000
@@ -52,11 +52,12 @@ services:
       # If it is a remote volume, uncomment the PS_FORCE_LOCAL_DB_REPLICA
       # environment line below.
 
-      - type: volume
-        source: storage
-        target: /ps/library
-        volume:
-          subpath: photostructure
+      - /home/alex/docker/volumes/photostructure/library:/ps/library
+      #type: volume
+      #   source: storage
+      #   target: /ps/library
+      #   volume:
+      #     subpath: photostructure
 
       # NOTE: if /ps/library is a fast local disk, you can delete 
       # the other /ps/... bind mounts below.
