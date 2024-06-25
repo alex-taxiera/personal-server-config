@@ -120,11 +120,6 @@ services:
       - /home/alex/docker/volumes/romm/redis-data:/redis-data # Cached data for background tasks
       - type: volume
         source: storage
-        target: /romm/library/roms
-        volume:
-          subpath: games/ROMs
-      - type: volume
-        source: storage
         target: /romm/assets
         volume:
           subpath: romm/assets
@@ -133,6 +128,62 @@ services:
         target: /romm/config
         volume:
           subpath: romm/config
+      # mapping to roms folders
+      - type: volume
+        source: storage
+        target: /romm/library/roms/gc
+        volume:
+          subpath: games/ROMs/1G1R - Redump - Nintendo - GameCube
+      - type: volume
+        source: storage
+        target: /romm/library/roms/dc
+        volume:
+          subpath: games/ROMs/1G1R - Redump - Sega - Dreamcast
+      - type: volume
+        source: storage
+        target: /romm/library/roms/saturn
+        volume:
+          subpath: games/ROMs/1G1R - Redump - Sega - Saturn
+      - type: volume
+        source: storage
+        target: /romm/library/roms/ps
+        volume:
+          subpath: games/ROMs/1G1R - Redump - Sony - PlayStation
+      - type: volume
+        source: storage
+        target: /romm/library/roms/ps
+        volume:
+          subpath: games/ROMs/1G1R - Redump - Sony - PlayStation (Part 2)
+      - type: volume
+        source: storage
+        target: /romm/library/roms/segacd
+        volume:
+          subpath: games/ROMs/1G1R - Redump+No-Intro - Sega - CD+32X/CD
+      - type: volume
+        source: storage
+        target: /romm/library/roms/sega32
+        volume:
+          subpath: games/ROMs/1G1R - Redump+No-Intro - Sega - CD+32X/32X
+      - type: volume
+        source: storage
+        target: /romm/library/roms/gb
+        volume:
+          subpath: games/ROMs/GB
+      - type: volume
+        source: storage
+        target: /romm/library/roms/gba
+        volume:
+          subpath: games/ROMs/GBA
+      - type: volume
+        source: storage
+        target: /romm/library/roms/gbc
+        volume:
+          subpath: games/ROMs/GBC
+      - type: volume
+        source: storage
+        target: /romm/library/roms/n64
+        volume:
+          subpath: games/ROMs/N64
     ports:
       - 8089:8080
     depends_on:
