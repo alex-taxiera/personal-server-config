@@ -1,3 +1,5 @@
+# DEPRECATED: use media compose with overrides
+
 version: '3.7'
 
 services:

@@ -100,3 +100,51 @@ services:
     volumes:
       - /home/alex/docker/volumes/ersatstv/config:/root/.local/share/ersatstv
       - storage:/data:ro
+  
+  romm:
+    image: rommapp/romm:latest
+    restart: unless-stopped
+    environment:
+      DB_HOST: media-romm-db-1
+      DB_NAME: romm # Should match MARIADB_DATABASE in mariadb
+      DB_USER: ${ROMM_DB_USER?error}
+      DB_PASSWD: ${ROMM_DB_PASSWORD?error}
+      IGDB_CLIENT_ID: ${IGDB_CLIENT_ID?error}
+      IGDB_CLIENT_SECRET: ${IGDB_CLIENT_SECRET?error}
+      MOBYGAMES_API_KEY: ${MOBYGAMES_API_KEY?error}
+      ROMM_AUTH_USERNAME: ${ROMM_AUTH_USERNAME?error}
+      ROMM_AUTH_PASSWORD: ${ROMM_AUTH_PASSWORD?error}
+      ROMM_AUTH_SECRET_KEY: ${ROMM_AUTH_SECRET_KEY?error}
+    volumes:
+      - /home/alex/docker/volumes/romm/resources:/romm/resources # Resources fetched from IGDB (covers, screenshots, etc.)
+      - /home/alex/docker/volumes/romm/redis-data:/redis-data # Cached data for background tasks
+      - type: volume
+        source: storage
+        target: /romm/library/roms
+        volume:
+          subpath: games/ROMs
+      - type: volume
+        source: storage
+        target: /romm/assets
+        volume:
+          subpath: romm/assets
+      - type: volume
+        source: storage
+        target: /romm/config
+        volume:
+          subpath: romm/config
+    ports:
+      - 8089:8080
+    depends_on:
+      - romm-db
+
+  romm-db:
+    image: mariadb:latest
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: romm
+      MARIADB_ROOT_PASSWORD: ${ROMM_DB_ROOT_PASSWORD?error}
+      MARIADB_USER: ${ROMM_DB_USER?error}
+      MARIADB_PASSWORD: ${ROMM_DB_PASSWORD?error}
+    volumes:
+      - /home/alex/docker/volumes/romm/mariadb-data:/var/lib/mysql
