@@ -1,6 +1,11 @@
+networks:
+  romm-db:
+  nginx-proxy:
+    external: true
+
 volumes:
   storage:
-    external: true 
+    external: true
 
 services:
   plex:
@@ -101,11 +106,24 @@ services:
       - /home/alex/docker/volumes/ersatstv/config:/root/.local/share/ersatstv
       - storage:/data:ro
   
+  romm-db:
+    image: mariadb:latest
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: romm
+      MARIADB_ROOT_PASSWORD: ${ROMM_DB_ROOT_PASSWORD?error}
+      MARIADB_USER: ${ROMM_DB_USER?error}
+      MARIADB_PASSWORD: ${ROMM_DB_PASSWORD?error}
+    networks:
+      - romm-db
+    volumes:
+      - /home/alex/docker/volumes/romm/mariadb-data:/var/lib/mysql
+
   romm:
     image: rommapp/romm:latest
     restart: unless-stopped
     environment:
-      DB_HOST: media-romm-db-1
+      DB_HOST: romm-db
       DB_NAME: romm # Should match MARIADB_DATABASE in mariadb
       DB_USER: ${ROMM_DB_USER?error}
       DB_PASSWD: ${ROMM_DB_PASSWORD?error}
@@ -115,6 +133,19 @@ services:
       ROMM_AUTH_USERNAME: ${ROMM_AUTH_USERNAME?error}
       ROMM_AUTH_PASSWORD: ${ROMM_AUTH_PASSWORD?error}
       ROMM_AUTH_SECRET_KEY: ${ROMM_AUTH_SECRET_KEY?error}
+      SCAN_TIMEOUT: 28800 # 8 hours in seconds
+      # nginx-proxy
+      VIRTUAL_PORT: 8080
+      VIRTUAL_HOST: games.taxiera.net
+      LETSENCRYPT_HOST: games.taxiera.net
+      LETSENCRYPT_EMAIL: alex.taxiera@gmail.com
+    ports:
+      - 8080:8080
+    networks:
+      - nginx-proxy
+      - romm-db
+    depends_on:
+      - romm-db
     volumes:
       - /home/alex/docker/volumes/romm/resources:/romm/resources # Resources fetched from IGDB (covers, screenshots, etc.)
       - /home/alex/docker/volumes/romm/redis-data:/redis-data # Cached data for background tasks
@@ -128,10 +159,15 @@ services:
         target: /romm/config
         volume:
           subpath: romm/config
+      - type: volume
+        source: storage
+        target: /romm/library/bios
+        volume:
+          subpath: romm/library/bios
       # mapping to roms folders
       - type: volume
         source: storage
-        target: /romm/library/roms/gc
+        target: /romm/library/roms/ngc
         volume:
           subpath: games/ROMs/1G1R - Redump - Nintendo - GameCube
       - type: volume
@@ -149,11 +185,6 @@ services:
         target: /romm/library/roms/ps
         volume:
           subpath: games/ROMs/1G1R - Redump - Sony - PlayStation
-      - type: volume
-        source: storage
-        target: /romm/library/roms/ps
-        volume:
-          subpath: games/ROMs/1G1R - Redump - Sony - PlayStation (Part 2)
       - type: volume
         source: storage
         target: /romm/library/roms/segacd
@@ -184,18 +215,33 @@ services:
         target: /romm/library/roms/n64
         volume:
           subpath: games/ROMs/N64
-    ports:
-      - 8089:8080
-    depends_on:
-      - romm-db
-
-  romm-db:
-    image: mariadb:latest
-    restart: unless-stopped
-    environment:
-      MARIADB_DATABASE: romm
-      MARIADB_ROOT_PASSWORD: ${ROMM_DB_ROOT_PASSWORD?error}
-      MARIADB_USER: ${ROMM_DB_USER?error}
-      MARIADB_PASSWORD: ${ROMM_DB_PASSWORD?error}
-    volumes:
-      - /home/alex/docker/volumes/romm/mariadb-data:/var/lib/mysql
+      - type: volume
+        source: storage
+        target: /romm/library/roms/nds
+        volume:
+          subpath: games/ROMs/NDS
+      - type: volume
+        source: storage
+        target: /romm/library/roms/3ds
+        volume:
+          subpath: games/ROMs/3DS
+      - type: volume
+        source: storage
+        target: /romm/library/roms/nes
+        volume:
+          subpath: games/ROMs/myrient.erista.me/files/No-Intro/Nintendo - Nintendo Entertainment System (Headered)
+      - type: volume
+        source: storage
+        target: /romm/library/roms/snes
+        volume:
+          subpath: games/ROMs/myrient.erista.me/files/No-Intro/Nintendo - Super Nintendo Entertainment System
+      - type: volume
+        source: storage
+        target: /romm/library/roms/genesis-slash-megadrive
+        volume:
+          subpath: games/ROMs/myrient.erista.me/files/No-Intro/Sega - Mega Drive - Genesis
+      - type: volume
+        source: storage
+        target: /romm/library/roms/gamegear
+        volume:
+          subpath: games/ROMs/myrient.erista.me/files/No-Intro/Sega - Game Gear
