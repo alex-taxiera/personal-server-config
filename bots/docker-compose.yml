@@ -23,7 +23,11 @@ secrets:
     external: true
   TUX_DB_PASS:
     external: true
+  TUX_SENTRY_DSN:
+    external: true
   TAG_TOKEN:
+    external: true
+  TAG_DB_URL:
     external: true
   TAG_DB_NAME:
     external: true
@@ -39,10 +43,22 @@ secrets:
     external: true
   AVC_ENV:
     external: true
+  ANNOUNCR_DISCORD_TOKEN:
+    external: true
 
 services:
+  announcr:
+    image: alextaxiera/bots:announcr-4
+    deploy:
+      replicas: 1
+    secrets:
+      -
+        source: ANNOUNCR_DISCORD_TOKEN
+        target: DISCORD_TOKEN
+    environment:
+      <<: *common
   tux:
-    image: alextaxiera/bots:tuxedoman-1
+    image: alextaxiera/bots:tuxedoman-37
     deploy:
       replicas: 1
     depends_on:
@@ -52,6 +68,9 @@ services:
     secrets:
       - ADMIN_DB_USER
       - ADMIN_DB_PASS
+      -
+        source: TUX_SENTRY_DSN
+        target: SENTRY_DSN
       -
         source: TUX_DB_NAME
         target: DB_NAME
@@ -68,7 +87,7 @@ services:
       <<: *common
 
   tag:
-    image: alextaxiera/bots:tag-19
+    image: alextaxiera/bots:tag-31
     deploy:
       replicas: 1
     depends_on:
@@ -80,14 +99,8 @@ services:
       - ADMIN_DB_USER
       - ADMIN_DB_PASS
       -
-        source: TAG_DB_NAME
-        target: DB_NAME
-      -
-        source: TAG_DB_USER
-        target: DB_USER
-      -
-        source: TAG_DB_PASS
-        target: DB_PASS
+        source: TAG_DB_URL
+        target: DATABASE_URL
       -
         source: TAG_TOKEN
         target: DISCORD_TOKEN
@@ -95,7 +108,7 @@ services:
       <<: *common
 
   eli:
-    image: alextaxiera/bots:eli-13
+    image: alextaxiera/bots:eli-35
     deploy:
       replicas: 1
     secrets:
