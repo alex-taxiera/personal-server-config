@@ -1,25 +1,165 @@
-version: '3.7'
-
-secrets:
-  MAIN_RCON_PASS:
-    external: true
+volumes:
+  storage:
+    external: true 
 
 services:
-  main:
+  glizzy-1-20:
+    restart: unless-stopped
     image: itzg/minecraft-server
-    deploy:
-      replicas: 1
     ports:
-      - 25565:25565
-    secrets:
-      - source: MAIN_RCON_PASS
-        target: RCON_PASSWORD
+      - target: 25565
+        published: 25570
+        mode: host
     environment:
-      VERSION: 1.17
-      MOTD: "Vanilla Minecraft, Chill Vibes Only"
-      EULA: "TRUE"
-      ENABLE_RCON: "true"
+      TYPE: PAPER
+      MEMORY: 2G
+      VERSION: 1.20.2
+      MOTD: Vanilla 1.20
+      EULA: 'true'
+      ENABLE_RCON: 'true'
       RCON_PORT: 28016
-      restart: always
+      OVERRIDE_SERVER_PROPERTIES: 'true'
+      SYNC_SKIP_NEWER_IN_DESTINATION: 'false'
+      COPY_CONFIG_DEST: /data
     volumes:
-      - /mnt/md0/minecraft/1.17:/data
+      - ./plugins/glizzy-1-20:/plugins
+      - ./config/glizzy-1-20:/config
+      -
+        type: volume
+        source: storage
+        target: /data
+        volume:
+          subpath: minecraft/glizzy-1.20
+
+  1-20:
+    restart: unless-stopped
+    image: itzg/minecraft-server
+    ports:
+      - 25599:25565
+    environment:
+      TYPE: PAPER
+      MEMORY: 2G
+      VERSION: 1.20.2
+      MOTD: Vanilla 1.20
+      EULA: 'true'
+      ENABLE_RCON: 'true'
+      RCON_PORT: 28016
+      OVERRIDE_SERVER_PROPERTIES: 'true'
+      SYNC_SKIP_NEWER_IN_DESTINATION: 'false'
+      COPY_CONFIG_DEST: /data
+    volumes:
+      - ./plugins/1-20:/plugins
+      - ./config/1-20:/config
+      - type: volume
+        source: storage
+        target: /data
+        volume:
+          subpath: minecraft/1.20
+
+  1-19:
+    restart: unless-stopped
+    image: itzg/minecraft-server
+    ports:
+      - target: 25565
+        published: 25589
+        mode: host
+    environment:
+      TYPE: PAPER
+      MEMORY: 2G
+      VERSION: 1.19.3
+      MOTD: Vanilla 1.19
+      EULA: 'true'
+      ENABLE_RCON: 'true'
+      RCON_PORT: 28016
+      OVERRIDE_SERVER_PROPERTIES: 'true'
+      SYNC_SKIP_NEWER_IN_DESTINATION: 'false'
+      COPY_CONFIG_DEST: /data
+    volumes:
+      - ./plugins/1-19:/plugins
+      - ./config/1-19:/config
+      -
+        type: volume
+        source: storage
+        target: /data
+        volume:
+          subpath: minecraft/1.19
+
+  1-18:
+    restart: unless-stopped
+    image: itzg/minecraft-server
+    ports:
+      - target: 25565
+        published: 25579
+        mode: host
+    environment:
+      TYPE: PAPER
+      MEMORY: 1G
+      VERSION: 1.18.1
+      MOTD: Vanilla 1.18
+      EULA: 'true'
+      ENABLE_RCON: 'true'
+      RCON_PORT: 28016
+      OVERRIDE_SERVER_PROPERTIES: 'true'
+      SYNC_SKIP_NEWER_IN_DESTINATION: 'false'
+      COPY_CONFIG_DEST: /data
+    volumes:
+      - ./plugins/1-18:/plugins
+      - ./config/1-18:/config
+      -
+        type: volume
+        source: storage
+        target: /data
+        volume:
+          subpath: minecraft/1.18
+
+  1-17:
+    restart: unless-stopped
+    image: itzg/minecraft-server
+    ports:
+      - target: 25565
+        published: 25569
+        mode: host
+    environment:
+      VERSION: 1.17.1
+      MOTD: Vanilla 1.17
+      EULA: 'true'
+      ENABLE_RCON: 'true'
+      RCON_PORT: 28016
+      OVERRIDE_SERVER_PROPERTIES: 'true'
+    volumes:
+      -
+        type: volume
+        source: storage
+        target: /data
+        volume:
+          subpath: minecraft/1.17
+
+  b1-7-3:
+    restart: unless-stopped
+    image: itzg/minecraft-server
+    ports:
+      - 25566:25565
+      - 28816:28016 # rcon?
+    environment:
+      TYPE: CUSTOM
+      CUSTOM_SERVER: /custom-server/canyon-server.jar
+      MEMORY: 2G
+      VERSION: b1.7.3
+      DISABLE_HEALTHCHECK: 'true' # doesn't exist in version 1.7.3
+      MOTD: Canyon b1.7.3
+      EULA: 'true'
+      ENABLE_RCON: 'true'
+      RCON_PORT: 28016
+      OVERRIDE_SERVER_PROPERTIES: 'true'
+      SYNC_SKIP_NEWER_IN_DESTINATION: 'false'
+      COPY_CONFIG_DEST: /data
+    volumes:
+      - ./custom:/custom-server
+      - ./plugins/b1-7-3:/plugins
+      - ./config/b1-7-3:/config
+      -
+        type: volume
+        source: storage
+        target: /data
+        volume:
+          subpath: minecraft/b1.7.3

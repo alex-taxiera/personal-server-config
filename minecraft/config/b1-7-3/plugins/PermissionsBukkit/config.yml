@@ -1,0 +1,36 @@
+messages:
+    build: '&cYou do not have permission to build here.'
+groups:
+    default:
+        permissions:
+            permissions.build: false
+            essentials.build: false
+    user:
+        inheritance:
+        - default
+        permissions:
+            permissions.build: true
+            essentials.build: true
+            essentials.help: true
+            essentials.motd: true
+            essentials.afk: true
+            essentials.afk.auto: true
+            essentials.seen: true
+            essentials.ping: true
+            essentials.home: true
+            essentials.home.bed: true
+            essentials.sethome: true
+            essentials.sethome.multiple: true
+            essentials.sethome.multiple.unlimited: true
+    admin:
+        inheritance:
+        - user
+        permissions:
+            permissions.*: true
+            essentials.*: true
+            dynmap.*: true
+            worldborder.*: true
+users:
+    Caalyx:
+        groups:
+        - admin

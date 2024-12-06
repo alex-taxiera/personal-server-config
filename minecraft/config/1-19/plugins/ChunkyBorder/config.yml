@@ -1,0 +1,14 @@
+# 10000 world border
+
+border-options:
+  message: '&cYou have reached the edge of this world.'
+  effect: ender_signal
+  sound: entity_enderman_teleport
+  prevent-mob-spawns: true
+map-options:
+  enable:
+    bluemap: false
+    squaremap: false
+  label: World Border
+  hide-by-default: true
+  color: FF0000

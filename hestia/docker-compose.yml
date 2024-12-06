@@ -1,0 +1,21 @@
+# DEPRECATED: use media compose with overrides
+
+version: '3.7'
+
+services:
+  plex:
+    image: plexinc/pms-docker
+    container_name: plex
+    network_mode: host
+    privileged: true
+    restart: always
+    hostname: HESTIA
+    environment:
+      TZ: America/New_York
+      #PLEX_CLAIM: <claimToken>
+    devices:
+      - /dev/dri:/dev/dri
+    volumes:
+      - /home/alex/docker/volumes/plex/config:/config
+      - /mnt/ramdisk/plex/transcode:/transcode
+      - /media/folso:/data

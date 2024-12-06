@@ -1,0 +1,55 @@
+volumes:
+  storage:
+    external: true 
+
+services:
+  main:
+    restart: unless-stopped
+    image: zomboid-dedicated-server
+    build:
+      context: https://github.com/alex-taxiera/zomboid-dedicated-server.git#my-fixes
+      dockerfile: docker/zomboid-dedicated-server.Dockerfile
+      args:
+        BASE_IMAGE: docker.io/renegademaster/steamcmd-minimal:2.0.0-root
+    environment:
+      - "AUTOSAVE_INTERVAL=15"
+      - "BIND_IP=0.0.0.0"
+      - "DEFAULT_PORT=16261"
+      - "GAME_VERSION=public"
+      - "GC_CONFIG=ZGC"
+      - "MAP_NAMES=Muldraugh, KY"
+      - "MAX_PLAYERS=16"
+      - "MAX_RAM=4096m"
+      - "MOD_NAMES="
+      - "MOD_WORKSHOP_IDS="
+      - "PAUSE_ON_EMPTY=true"
+      - "PUBLIC_SERVER=true"
+      - "RCON_PORT=0" # 27015
+      - "SERVER_NAME=A Very Cool Vanilla Server"
+      - "STEAM_VAC=true"
+      - "UDP_PORT=16262"
+      - "USE_STEAM=true"
+      - "TZ=UTC"
+    ports:
+      - target: 16261
+        published: 16261
+        protocol: udp
+      - target: 16262
+        published: 16262
+        protocol: udp
+#      - target: 27015
+#        published: 27015
+#        protocol: tcp
+    volumes:
+      -
+        type: volume
+        source: storage
+        target: /home/steam/ZomboidDedicatedServer
+        volume:
+          subpath: zomboid/ZomboidDedicatedServer
+      -
+        type: volume
+        source: storage
+        target: /home/steam/Zomboid
+        volume:
+          subpath: zomboid/ZomboidConfig

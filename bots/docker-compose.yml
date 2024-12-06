@@ -108,7 +108,7 @@ services:
       <<: *common
 
   eli:
-    image: alextaxiera/bots:eli-35
+    image: alextaxiera/bots:eli-37
     deploy:
       replicas: 1
     secrets:

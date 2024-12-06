@@ -1,0 +1,45 @@
+version: '3.7'
+
+networks:
+  nginx-proxy:
+    external: true
+
+services:
+  proxy:
+    image: nginxproxy/nginx-proxy
+    restart: unless-stopped
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+    networks:
+      - nginx-proxy
+    ports:
+      - target: 80
+        published: 80
+        mode: host
+      - target: 443
+        published: 443
+        mode: host
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /home/alex/docker/volumes/nextcloud/nginx/conf.d:/etc/nginx/conf.d
+      - /home/alex/docker/volumes/nextcloud/nginx/vhost.d:/etc/nginx/vhost.d
+      - /home/alex/docker/volumes/nextcloud/nginx/html:/usr/share/nginx/html
+      - /home/alex/docker/volumes/nextcloud/nginx/certs:/etc/nginx/certs:ro
+      - ./unlimited_upload.conf:/etc/nginx/conf.d/unlimited_upload.conf:ro
+
+  letsencrypt:
+    image: nginxproxy/acme-companion
+    restart: unless-stopped
+    depends_on:
+      - proxy
+    networks:
+      - nginx-proxy
+    volumes:
+      - /home/alex/docker/volumes/nextcloud/nginx/conf.d:/etc/nginx/conf.d
+      - /home/alex/docker/volumes/nextcloud/nginx/vhost.d:/etc/nginx/vhost.d
+      - /home/alex/docker/volumes/nextcloud/nginx/html:/usr/share/nginx/html
+      - /home/alex/docker/volumes/nextcloud/nginx/certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /home/alex/docker/volumes/letsencrypt:/etc/acme.sh
+    environment:
+      DEFAULT_EMAIL: alex.taxiera@gmail.com
