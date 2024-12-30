@@ -58,7 +58,7 @@ services:
     environment:
       <<: *common
   tux:
-    image: alextaxiera/bots:tuxedoman-37
+    image: alextaxiera/bots:tuxedoman-51
     deploy:
       replicas: 1
     depends_on:
