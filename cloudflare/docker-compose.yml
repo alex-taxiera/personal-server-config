@@ -1,0 +1,13 @@
+services:
+  tunnel:
+    image: cloudflare/cloudflared
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TOKEN?error}
+    networks:
+      - cloudflare
+
+networks:
+  cloudflare:
+    external: true

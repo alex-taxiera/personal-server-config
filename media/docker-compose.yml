@@ -96,14 +96,14 @@ services:
       #   target: /var/home-jamie-pictures
 
   ersatstv:
-    image: jasongdove/ersatztv
+    image: jasongdove/ersatztv:develop
     restart: unless-stopped
     ports:
       - 8409:8409
     environment:
       TZ: America/New_York
     volumes:
-      - /home/alex/docker/volumes/ersatstv/config:/root/.local/share/ersatstv
+      - /home/alex/docker/volumes/ersatstv/config:/config
       - storage:/data:ro
   
   romm-db:
@@ -120,7 +120,7 @@ services:
       - /home/alex/docker/volumes/romm/mariadb-data:/var/lib/mysql
 
   romm:
-    image: rommapp/romm:latest
+    image: rommapp/romm:3.3
     restart: unless-stopped
     environment:
       DB_HOST: romm-db
@@ -130,6 +130,7 @@ services:
       IGDB_CLIENT_ID: ${IGDB_CLIENT_ID?error}
       IGDB_CLIENT_SECRET: ${IGDB_CLIENT_SECRET?error}
       MOBYGAMES_API_KEY: ${MOBYGAMES_API_KEY?error}
+      STEAMGRIDDB_API_KEY: ${STEAMGRIDDB_API_KEY?error}
       ROMM_AUTH_USERNAME: ${ROMM_AUTH_USERNAME?error}
       ROMM_AUTH_PASSWORD: ${ROMM_AUTH_PASSWORD?error}
       ROMM_AUTH_SECRET_KEY: ${ROMM_AUTH_SECRET_KEY?error}
@@ -185,6 +186,11 @@ services:
         target: /romm/library/roms/ps
         volume:
           subpath: games/ROMs/1G1R - Redump - Sony - PlayStation
+      - type: volume
+        source: storage
+        target: /romm/library/roms/ps2
+        volume:
+          subpath: games/ROMs/PS2
       - type: volume
         source: storage
         target: /romm/library/roms/segacd

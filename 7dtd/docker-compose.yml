@@ -28,7 +28,7 @@ services:
       - ENZOMBIES_UPDATE=NO # Optional - Update EnZombies mod and addons before server start
       - CPM=NO # Optional - CSMM Patron's Mod (CPM)
       - CPM_UPDATE=NO # Optional - Update CPM before server start
-      - BACKUP=NO # Optional - Backup server at 5 AM
+      - BACKUP=YES # Optional - Backup server at 5 AM
       - MONITOR=NO # Optional - Keeps server up if crash
     volumes:
       -
@@ -66,7 +66,7 @@ services:
       - 26900:26900/udp # Default game ports
       - 26901:26901/udp # Default game ports
       - 26902:26902/udp # Default game ports
-      - 8080:8080/tcp # OPTIONAL - WEBADMIN
-      - 8081:8081/tcp # OPTIONAL - TELNET
-      - 8082:8082/tcp # OPTIONAL - WEBSERVER https://7dtd.illy.bz/wiki/Server%20fixes
+      - 8077:8080/tcp # OPTIONAL - WEBADMIN
+      - 8078:8081/tcp # OPTIONAL - TELNET
+      - 8079:8082/tcp # OPTIONAL - WEBSERVER https://7dtd.illy.bz/wiki/Server%20fixes
     restart: unless-stopped # INFO - NEVER USE WITH START_MODE=4 or START_MODE=0
