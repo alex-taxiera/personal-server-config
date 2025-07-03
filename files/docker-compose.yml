@@ -10,6 +10,8 @@ services:
   transmission:
     restart: unless-stopped
     image: ghcr.io/linuxserver/transmission
+    networks:
+      - cloudflare
     environment:
       PUID: 1000
       PGID: 1000
@@ -28,6 +30,7 @@ services:
       - 9091:9091
       - 51413:51413
       - 51413:51413/udp
+
   samba:
     restart: unless-stopped
     image: ghcr.io/servercontainers/samba
@@ -88,10 +91,9 @@ services:
           subpath: software
     cap_add:
       - CAP_NET_ADMIN
+
   simple-file-server:
     image: flaviostutz/simple-file-server
-    ports:
-      - "4000:4000"
     restart: unless-stopped
     volumes:
       -

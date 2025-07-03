@@ -1,6 +1,6 @@
 networks:
   romm-db:
-  nginx-proxy:
+  cloudflare:
     external: true
 
 volumes:
@@ -135,15 +135,8 @@ services:
       ROMM_AUTH_PASSWORD: ${ROMM_AUTH_PASSWORD?error}
       ROMM_AUTH_SECRET_KEY: ${ROMM_AUTH_SECRET_KEY?error}
       SCAN_TIMEOUT: 28800 # 8 hours in seconds
-      # nginx-proxy
-      VIRTUAL_PORT: 8080
-      VIRTUAL_HOST: games.taxiera.net
-      LETSENCRYPT_HOST: games.taxiera.net
-      LETSENCRYPT_EMAIL: alex.taxiera@gmail.com
-    ports:
-      - 8080:8080
     networks:
-      - nginx-proxy
+      - cloudflare
       - romm-db
     depends_on:
       - romm-db
