@@ -1,0 +1,29 @@
+services:
+  db:
+    restart: always
+    image: postgres:17
+    volumes:
+      - /var/fider/pg_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: fider
+      POSTGRES_PASSWORD: ${DB_PASS?error}
+  app:
+    restart: always
+    image: getfider/fider:stable
+    ports:
+      - "80:3000"
+    environment:
+      # Public Host Name
+      BASE_URL: ${BASE_URL?error}
+
+      # Connection string to the PostgreSQL database
+      DATABASE_URL: postgres://fider:${DB_PASS?error}@db:5432/fider?sslmode=disable
+
+      # Generate a secure secret, for example using https://jwtsecrets.com
+      JWT_SECRET: ${JWT_SECRET?error}
+
+      # From which account e-mails will be sent
+      EMAIL_NOREPLY: ${EMAIL_NOREPLY?error}
+      EMAIL_MAILGUN_API: ${MAILGUN_KEY?error}
+      EMAIL_MAILGUN_DOMAIN: ${MAILGUN_DOMAIN?error}
+      EMAIL_MAILGUN_REGION: US
