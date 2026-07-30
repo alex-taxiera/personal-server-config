@@ -1,6 +1,6 @@
 services:
   db:
-    restart: always
+    restart: unless-stopped
     image: postgres:17
     volumes:
       - /var/fider/pg_data:/var/lib/postgresql/data
@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: fider
       POSTGRES_PASSWORD: ${DB_PASS?error}
   app:
-    restart: always
+    restart: unless-stopped
     image: getfider/fider:stable
     ports:
       - "80:3000"
